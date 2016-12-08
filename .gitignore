@@ -4,6 +4,8 @@
 *.bak
 *.sql
 *.sql.gz
+*.tar
+*.tar.gz
 ~*
 
 .htaccess
