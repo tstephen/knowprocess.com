@@ -2,10 +2,10 @@
  * Site-wide settings
  */
 a {
-  color: #656e7f;
+  color: #9ebfb9;
 }
 a:focus, a:hover {
-  color: #1e252d;
+  color: #da72ae;
 }
 body {
   background-color: #f0f1f3;
