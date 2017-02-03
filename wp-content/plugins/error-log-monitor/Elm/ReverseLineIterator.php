@@ -23,6 +23,8 @@ class Elm_ReverseLineIterator implements Iterator {
 	 */
 	private $lineBuffer = array();
 
+	private $bufferIndex = -1;
+
 	/**
 	 * @var int Current seek position.
 	 */
@@ -31,7 +33,7 @@ class Elm_ReverseLineIterator implements Iterator {
 	/**
 	 * @var int Read buffer size.
 	 */
-	private $bufferSizeInBytes = 8192;
+	private $bufferSizeInBytes = 20480;
 
 	/**
 	 * @var string Buffer data left over from the previous readNextLine() iteration.
@@ -66,6 +68,7 @@ class Elm_ReverseLineIterator implements Iterator {
 		$this->position = ftell($this->filePointer);
 
 		$this->lineBuffer = array();
+		$this->bufferIndex = -1;
 		$this->currentLine = null;
 		$this->currentLineNumber = 0;
 
@@ -80,7 +83,7 @@ class Elm_ReverseLineIterator implements Iterator {
 		}
 
 		//Populate the internal buffer.
-		while ( (count($this->lineBuffer) < 1) && ($this->position > 0) ) {
+		while ( ($this->bufferIndex < 0) && ($this->position > 0) ) {
 			//Since $position is an offset from the start of the file,
 			//it's also equal to the total amount of remaining data.
 			$bytesToRead = ($this->position > $this->bufferSizeInBytes) ? $this->bufferSizeInBytes : $this->position;
@@ -101,12 +104,14 @@ class Elm_ReverseLineIterator implements Iterator {
 			}
 
 			$this->lineBuffer = $newLines;
+			$this->bufferIndex = count($this->lineBuffer) - 1;
 		}
 
 		//Get the next line from the buffer.
-		if ( count($this->lineBuffer) > 0 ) {
-			$this->currentLine = array_pop($this->lineBuffer);
+		if ( $this->bufferIndex >= 0 ) {
+			$this->currentLine = $this->lineBuffer[$this->bufferIndex];
 			$this->currentLineNumber++;
+			$this->bufferIndex--;
 		} else {
 			$this->currentLine = null;
 		}

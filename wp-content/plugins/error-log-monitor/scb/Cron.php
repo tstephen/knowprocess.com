@@ -150,6 +150,10 @@ class scbCron {
 	 */
 	protected static function really_clear_scheduled_hook( $name ) {
 		$crons = _get_cron_array();
+		//WSH: Exit early if there are no cron tasks.
+		if ($crons === false) {
+			return;
+		}
 
 		foreach ( $crons as $timestamp => $hooks ) {
 			foreach ( $hooks as $hook => $args )

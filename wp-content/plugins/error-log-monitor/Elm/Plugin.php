@@ -30,6 +30,7 @@ class Elm_Plugin {
 				'timestamp_format' => 'M d, H:i:s',
 				'sort_order' => 'chronological',
 				'extra_filter_line_count' => 1000,
+				'dashboard_log_layout' => 'list',
 
 				'enable_log_size_notification' => false,
 				'log_size_notification_threshold' => self::MB_IN_BYTES, //bytes
@@ -40,6 +41,8 @@ class Elm_Plugin {
 				'dashboard_message_filter_groups' => Elm_SeverityFilter::getAvailableOptions(),
 				'email_message_filter' => 'same_as_dashboard',
 				'email_message_filter_groups' => Elm_SeverityFilter::getAvailableOptions(),
+
+				'ignored_messages' => array(),
 			)
 		);
 
@@ -225,7 +228,9 @@ class Elm_Plugin {
 			return $logIterator;
 		}
 
-		$filteredLog = new Elm_SeverityFilter($logIterator, $includedGroups);
+		$ignoreFilter = new Elm_IgnoredMessageFilter($logIterator, $this->settings->get('ignored_messages'));
+
+		$filteredLog = new Elm_SeverityFilter($ignoreFilter, $includedGroups);
 		return $filteredLog;
 	}
 
@@ -245,12 +250,38 @@ class Elm_Plugin {
 		}
 	}
 
+	/**
+	 * @param Elm_PhpErrorLog $log
+	 * @return Elm_SummaryItem[]
+	 */
+	public function getSummary(Elm_PhpErrorLog $log) {
+		$entries = $this->getFilteredEntries($log, $this->getIncludedGroupsForDashboard(), 10000);
+
+		$generator = new Elm_SummaryGenerator($entries, 7 * 24 * 3600, 7 * 4);
+		$summary = $generator->getSummary();
+
+		return $summary;
+	}
+
 	public function stripWpPath($string) {
 		return str_replace(rtrim(ABSPATH, '/\\'), '', $string);
 	}
 
 	public function formatTimestamp($timestamp) {
 		return gmdate($this->settings->get('timestamp_format'), $timestamp);
+	}
+
+	/**
+	 * Format a log message for display. Does not escape special characters.
+	 *
+	 * @param string $message
+	 * @return string
+	 */
+	public function formatLogMessage($message) {
+		if ( $this->settings->get('strip_wordpress_path') ) {
+			$message = $this->stripWpPath($message);
+		}
+		return $message;
 	}
 
 	public function checkLogFileSize() {

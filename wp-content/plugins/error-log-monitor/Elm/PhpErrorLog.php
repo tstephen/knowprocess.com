@@ -92,4 +92,8 @@ class Elm_PhpErrorLog {
 	public function getFileSize() {
 		return filesize($this->getFilename());
 	}
+
+	public function getModificationTime() {
+		return filemtime($this->filename);
+	}
 }

@@ -3,7 +3,7 @@
 /**
  * Filters log entries by the severity level.
  */
-class Elm_SeverityFilter implements Iterator {
+class Elm_SeverityFilter implements Iterator, Elm_LogFilter {
 	const UNKNOWN_LEVEL_GROUP = 'other';
 
 	private $logIterator;
@@ -97,7 +97,13 @@ class Elm_SeverityFilter implements Iterator {
 	}
 
 	public function getSkippedEntryCount() {
-		return $this->skippedEntryCount;
+		$count = $this->skippedEntryCount;
+
+		if ( $this->logIterator instanceof Elm_LogFilter ) {
+			$count += $this->logIterator->getSkippedEntryCount();
+		}
+
+		return $count;
 	}
 
 	public function formatSkippedEntryCount() {

@@ -28,4 +28,30 @@ jQuery(function($) {
 	emailCustomFilterOption.add(emailMatchFilterOption).on('change', function() {
 		updateEmailOptions();
 	});
+
+	//Handle the "Ignore" link.
+	widget.on('click', '.elm-ignore-message', function() {
+		var row = $(this).closest('.elm-entry'),
+			message = row.data('raw-message');
+
+		//Hide all copies of this message.
+		row.closest('.elm-log-entries').find('.elm-entry').filter(function() {
+			return $(this).data('raw-message') === message;
+		}).hide().remove();
+
+		AjawV1.getAction('elm-ignore-message').post({ message: message });
+
+		return false;
+	});
+
+	//And the "Unignore" link.
+	widget.on('click', '.elm-unignore-message', function() {
+		var row = $(this).closest('tr'),
+			message = row.data('raw-message');
+
+		row.remove();
+		AjawV1.getAction('elm-unignore-message').post({ message: message });
+
+		return false;
+	});
 });

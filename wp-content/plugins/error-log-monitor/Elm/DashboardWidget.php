@@ -15,6 +15,19 @@ class Elm_DashboardWidget {
 	private function __construct($settings, $plugin) {
 		$this->settings = $settings;
 		$this->plugin = $plugin;
+
+		ajaw_v1_CreateAction('elm-ignore-message')
+			->handler(array($this, 'ajaxIgnoreMessage'))
+			->requiredParam('message')
+			->requiredCap($this->requiredCapability)
+			->register();
+
+		ajaw_v1_CreateAction('elm-unignore-message')
+			->handler(array($this, 'ajaxIgnoreMessage'))
+			->requiredParam('message')
+			->requiredCap($this->requiredCapability)
+			->register();
+
 		add_action('wp_dashboard_setup', array($this, 'registerWidget'));
 		add_action('admin_init', array($this, 'handleLogClearing'));
 	}
@@ -42,15 +55,15 @@ class Elm_DashboardWidget {
 			wp_enqueue_script(
 				'elm-dashboard-widget',
 				plugins_url('js/dashboard-widget.js', $this->plugin->getPluginFile()),
-				array('jquery'),
-				'20160908'
+				array('jquery', 'ajaw-v1-ajax-action-wrapper'),
+				'20170127'
 			);
 
 			wp_enqueue_style(
 				'elm-dashboard-widget-styles',
 				plugins_url('css/dashboard-widget.css', $this->plugin->getPluginFile()),
 				array(),
-				'20160919'
+				'20170120'
 			);
 		}
 	}
@@ -73,7 +86,14 @@ class Elm_DashboardWidget {
 			return;
 		}
 
+		//$this->displaySummary();
+
+		$startTime = microtime(true);
 		$lines = $filteredLog->readLastEntries($this->settings->get('widget_line_count'));
+		$elapsedTime = microtime(true) - $startTime;
+
+		printf('<!-- Log file parse time: %.3f seconds -->', $elapsedTime);
+
 		if ( empty($lines) ) {
 			if ( $filteredLog->getSkippedEntryCount() > 0 ) {
 				$message = __(
@@ -92,37 +112,20 @@ class Elm_DashboardWidget {
 			if ($this->settings->get('sort_order') === 'reverse-chronological') {
 				$lines = array_reverse($lines);
 			}
-			echo '<table class="widefat" style="table-layout: fixed; overflow: hidden; box-sizing: border-box;">',
-			     '<colgroup><col style="width: 9em;"><col></colgroup>',
-			     '<tbody>';
-			$isOddRow = false;
-			foreach ($lines as $line) {
-				$isOddRow = !$isOddRow;
-				if ( $this->settings->get('strip_wordpress_path') ) {
-					$line['message'] = $this->plugin->stripWpPath($line['message']);
-				}
 
-				printf(
-					'<tr%s><td style="white-space:nowrap;">%s</td>',
-					$isOddRow ? ' class="alternate"' : '',
-					!empty($line['timestamp']) ? $this->plugin->formatTimestamp($line['timestamp']) : ''
-				);
+			/*
+			 * Maybe show a notice if there are no errors or warnings in the last 24 hours / 7 days.
+			 * Either just no messages, or only minor messages like notices or deprecation warnings.
+			 * "No errors or warnings today."
+			 * "No log entries in the last 24 hours."
+			 * "No errors or warnings in the last 24 hours."
+			 */
 
-				echo '<td>';
-				echo esc_html($line['message']);
-
-				if ( !empty($line['stacktrace']) ) {
-					echo '<ul class="elm-stacktrace">';
-					foreach($line['stacktrace'] as $item) {
-						printf('<li>%s</li>'. "\n", esc_html($item));
-					}
-					echo '</ul>';
-				}
-
-				echo '</td>';
-				echo '</tr>';
+			if ($this->settings->get('dashboard_log_layout', 'list') === 'list') {
+				$this->displayLogAsList($lines);
+			} else {
+				$this->displayLogAsTable($lines);
 			}
-			echo '</tbody></table>';
 
 			if ( $filteredLog->getSkippedEntryCount() > 0 ) {
 				$this->displaySkippedEntryCount($filteredLog);
@@ -135,6 +138,7 @@ class Elm_DashboardWidget {
 				esc_html($log->getFilename()),
 				Elm_Plugin::formatByteCount($log->getFileSize(), 2)
 			);
+			/** @noinspection HtmlUnknownTarget */
 			printf(
 				'<a href="%s" class="button" onclick="return confirm(\'%s\');">%s</a>',
 				wp_nonce_url(admin_url('/index.php?elm-action=clear-log&noheader=1'), 'clear-log'),
@@ -146,10 +150,137 @@ class Elm_DashboardWidget {
 		}
 	}
 
+	private function getIgnoreLink() {
+		static $html = null;
+		if ( $html === null ) {
+			$html = sprintf(
+				'<a href="#" class="elm-ignore-message" title="%s">%s</a>',
+				esc_attr(__(
+					"Ignored messages stay in the log file but they don't show up in the widget and don't generate email notifications.",
+					'error-log-monitor'
+				)),
+				_x('Ignore', 'action link', 'error-log-monitor')
+			);
+		}
+		return $html;
+	}
+
 	private function displaySkippedEntryCount(Elm_SeverityFilter $filteredLog) {
 		echo '<p><div class="dashicons dashicons-filter" style="color: #82878c;"></div> ';
 		$filteredLog->formatSkippedEntryCount();
 		echo '</p>';
+	}
+
+	private function displayLogAsTable($lines) {
+		echo '<table class="widefat striped elm-log-entries elm-log-table">',
+		'<colgroup><col style="width: 9em;"><col></colgroup>',
+		'<tbody>';
+		foreach ($lines as $line) {
+			printf(
+				'<tr data-raw-message="%s" class="elm-entry"><td style="white-space:nowrap;">
+						%s
+						<p class="elm-line-actions">%s</p>						
+					</td>',
+				esc_attr($line['message']),
+				!empty($line['timestamp']) ? $this->plugin->formatTimestamp($line['timestamp']) : '',
+				$this->getIgnoreLink()
+			);
+
+			echo '<td>';
+			echo esc_html($this->plugin->formatLogMessage($line['message']));
+
+			if ( !empty($line['stacktrace']) ) {
+				$this->displayStackTrace($line['stacktrace']);
+			}
+
+			echo '</td>';
+			echo '</tr>';
+		}
+		echo '</tbody></table>';
+	}
+
+	private function displayLogAsList($lines) {
+		//Do any of the log entries have a stack trace?
+		$hasStackTraces = false;
+		foreach($lines as $line) {
+			if ( !empty($line['stacktrace']) ) {
+				$hasStackTraces = true;
+				break;
+			}
+		}
+
+		$listClasses = array('elm-log-entries', 'elm-wide-list');
+		if ( $hasStackTraces ) {
+			$listClasses[] = 'elm-list-with-stack-traces';
+		}
+
+		$actions = sprintf('<div class="elm-line-actions">%s</div>', $this->getIgnoreLink());
+
+		echo '<ul class="', esc_attr(implode(' ', $listClasses)), '"><tbody>';
+		foreach ($lines as $line) {
+			printf(
+				'<li class="elm-entry%s" data-raw-message="%s">%s <p class="elm-timestamp">%s</p>',
+				!empty($line['stacktrace']) ? ' elm-has-stack-trace' : '',
+				esc_attr($line['message']),
+				$actions,
+				!empty($line['timestamp']) ? $this->plugin->formatTimestamp($line['timestamp']) : ''
+			);
+
+			echo '<p class="elm-log-message">',
+				esc_html($this->plugin->formatLogMessage($line['message'])),
+			'</p>';
+
+			if ( !empty($line['stacktrace']) ) {
+				$this->displayStackTrace($line['stacktrace']);
+			}
+
+			echo '</li>';
+		}
+		echo '</ul>';
+	}
+
+	private function displayStackTrace($stackTrace) {
+		if ( empty($stackTrace) ) {
+			return;
+		}
+
+		echo '<ul class="elm-stacktrace">';
+		foreach($stackTrace as $item) {
+			//Remove the "PHP " prefix from trace items.
+			$item = preg_replace('@^PHP @', '', $item, 1);
+			printf('<li>%s</li>'. "\n", esc_html($this->plugin->formatLogMessage($item)));
+		}
+		echo '</ul>';
+	}
+
+	private function displaySummary() {
+		//TODO: Finish summary generation.
+		$summary = $this->plugin->getSummary(new Elm_PhpErrorLog('C:\xampp\htdocs\cbtool\blog\wp-content\adminmenueditor_com.php.error.log'));
+		$maxBarHeight = 100;
+
+		foreach($summary as $item) {
+			printf(
+				'<p>%s</p><p>Count: %d</p>',
+				htmlentities($item->message),
+				$item->count
+			);
+
+			$maxBinValue = max($item->chart);
+
+			echo '<ol class="elm-chart">';
+			foreach($item->chart as $eventsInBin) {
+				printf(
+					'<li class="elm-chart-point %s" style="height: %d%%; width: %.2f%%" title="%d"></li>',
+					($eventsInBin === 0) ? 'elm-chart-zero-point' : '',
+					max(min(($eventsInBin / $maxBinValue), 1) * $maxBarHeight, 1),
+					1 / count($item->chart) * 100,
+					$eventsInBin
+				);
+			}
+			echo '</ol>';
+
+			//var_dump($item);
+		}
 	}
 
 	private function displayConfigurationHelp($problem) {
@@ -251,18 +382,28 @@ class Elm_DashboardWidget {
 				}
 			}
 
+			$logLayout = strval($formInputs['dashboard_log_layout']);
+			if ( in_array($logLayout, array('list', 'table')) ) {
+				$this->settings->set('dashboard_log_layout', $logLayout);
+			}
+
 			do_action('elm_settings_changed', $this->settings);
 		}
 
 		printf(
-			'<p><label>%s <input type="text" name="%s[widget_line_count]" value="%s" size="5"></label></p>',
+			'<h3 class="elm-config-section-heading"><strong>%s</strong></h3>',
+			_x('General', 'configuration section heading', 'error-log-monitor')
+		);
+
+		printf(
+			'<p><label>%s <br><input type="text" name="%s[widget_line_count]" value="%s" size="5"></label></p>',
 			__('Number of entries to show:', 'error-log-monitor'),
 			esc_attr($this->widgetId),
 			esc_attr($this->settings->get('widget_line_count'))
 		);
 
 		printf(
-			'<p><label><input type="checkbox" name="%s[strip_wordpress_path]"%s> %s</label></p>',
+			'<p><label><input type="checkbox" name="%s[strip_wordpress_path]" %s> %s</label></p>',
 			esc_attr($this->widgetId),
 			$this->settings->get('strip_wordpress_path') ? ' checked="checked"' : '',
 			__('Strip WordPress root directory from log messages', 'error-log-monitor')
@@ -273,6 +414,27 @@ class Elm_DashboardWidget {
 			esc_attr($this->widgetId),
 			$this->settings->get('sort_order') === 'reverse-chronological' ? ' checked="checked"' : '',
 			__('Reverse line order (most recent on top)', 'error-log-monitor')
+		);
+
+		printf('<p class="hidden">%s <br>', __('Widget layout:', 'error-log-monitor'));
+		$layouts = array(
+			_x('Table', 'widget layout option', 'error-log-monitor') => 'table',
+			_x('List', 'widget layout option', 'error-log-monitor') => 'list',
+		);
+		foreach($layouts as $name => $value) {
+			printf(
+				'<label><input type="radio" name="%s[dashboard_log_layout]" value="%s" %s> %s</label><br>',
+				esc_attr($this->widgetId),
+				esc_attr($value),
+				($value == $this->settings->get('dashboard_log_layout')) ? ' checked="checked"' : '',
+				$name
+			);
+		}
+		echo '</p>';
+
+		printf(
+			'<h3 class="elm-config-section-heading"><strong>%s</strong></h3>',
+			_x('Notifications', 'configuration section heading', 'error-log-monitor')
 		);
 
 		printf(
@@ -286,7 +448,7 @@ class Elm_DashboardWidget {
 		);
 
 		printf(
-			'<p><label>%s <select name="%s[email_interval]">',
+			'<p><label>%s <br><select name="%s[email_interval]">',
 			__('How often to send email (max):', 'error-log-monitor'),
 			esc_attr($this->widgetId)
 		);
@@ -300,7 +462,7 @@ class Elm_DashboardWidget {
 		);
 		foreach($intervals as $name => $interval) {
 			printf(
-				'<option value="%d"%s>%s</option>',
+				'<option value="%d" %s>%s</option>',
 				$interval,
 				($interval == $this->settings->get('email_interval')) ? ' selected="selected"' : '',
 				$name
@@ -310,7 +472,7 @@ class Elm_DashboardWidget {
 
 		printf(
 			'<p><label><input type="checkbox" name="%s[enable_log_size_notification]" 
-		                      id="elm_enable_log_size_notification"%s> %s</label><br>',
+		                      id="elm_enable_log_size_notification" %s> %s</label><br>',
 			esc_attr($this->widgetId),
 			$this->settings->get('enable_log_size_notification') ? ' checked="checked"' : '',
 			__('Send an email notification when the log file size exceeds this limit:', 'error-log-monitor')
@@ -337,7 +499,12 @@ class Elm_DashboardWidget {
 		</script>
 		<?php
 
-		echo '<h4>Dashboard widget filter</h4>';
+		printf(
+			'<h3 class="elm-config-section-heading"><strong>%s</strong></h3>',
+			_x('Filters', 'configuration section heading', 'error-log-monitor')
+		);
+
+		echo '<h4>', __('Dashboard widget filter', 'error-log-monitor'), '</h4>';
 
 		printf(
 			'<label><input type="radio" name="%s[dashboard_message_filter]" value="all"
@@ -359,7 +526,7 @@ class Elm_DashboardWidget {
 			$this->settings->get('dashboard_message_filter_groups', Elm_SeverityFilter::getAvailableOptions())
 		);
 
-		echo '<h4>Email notification filter</h4>';
+		echo '<h4>', __('Email notification filter', 'error-log-monitor'), '</h4>';
 
 		printf(
 			'<label><input type="radio" name="%s[email_message_filter]" value="same_as_dashboard"
@@ -380,6 +547,27 @@ class Elm_DashboardWidget {
 			'email_severity_option',
 			$this->settings->get('email_message_filter_groups', Elm_SeverityFilter::getAvailableOptions())
 		);
+
+		//Ignored message list.
+		printf('<h4>%s</h4>', __('Ignored messages', 'error-log-monitor'));
+
+		$ignoredMessages = $this->settings->get('ignored_messages', array());
+		if ( empty($ignoredMessages) ) {
+			echo '<p>', __('There are no ignored messages.', 'error-log-monitor'), '</p>';
+		} else {
+			echo '<table class="widefat striped elm-ignored-messages">';
+			foreach(array_keys($ignoredMessages) as $message) {
+				printf('<tr data-raw-message="%s">', esc_attr($message));
+				printf('<td>%s</td>', htmlentities($message));
+				printf(
+					'<td><p class="elm-line-actions"><a href="#" class="elm-unignore-message">%s</a></p></td>',
+					_x('Unignore', 'action link', 'error-log-monitor')
+				);
+				echo '</tr>';
+			}
+			echo '</table>';
+		}
+
 	}
 
 	private function printSeverityFilterOptions($fieldNamePrefix, $selectedOptions) {
@@ -440,6 +628,37 @@ class Elm_DashboardWidget {
 			wp_redirect(admin_url('index.php?elm-log-cleared=1'));
 			exit();
 		}
+	}
+
+	/**
+	 * Note: This handler processes both "ignore" and "unignore" operations.
+	 *
+	 * @param array $params
+	 * @return mixed
+	 */
+	public function ajaxIgnoreMessage($params) {
+		//Avoid race conditions.
+		//Step 1: Use locks.
+		$handle = fopen(__FILE__, 'r');
+		flock($handle, LOCK_EX);
+		//Step 2: Force WP to reload options from the database. Normally this would be
+		//bad for performance, but it's acceptable in a rarely used AJAX handler.
+		wp_cache_delete('alloptions', 'options');
+
+		$ignoredMessages = $this->settings->get('ignored_messages', array());
+
+		if ( $params['action'] === 'elm-ignore-message' ) {
+			//Add the message to the list.
+			$ignoredMessages[$params['message']] = true;
+		} else {
+			//Remove the message from the list.
+			unset($ignoredMessages[$params['message']]);
+		}
+
+		$this->settings->set('ignored_messages', $ignoredMessages);
+
+		flock($handle, LOCK_UN);
+		return $ignoredMessages;
 	}
 
 	public static function getInstance($settings, $plugin) {
