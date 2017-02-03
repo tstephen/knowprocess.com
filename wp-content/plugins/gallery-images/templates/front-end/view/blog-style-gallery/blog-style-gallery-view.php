@@ -1,6 +1,8 @@
-<div class="video_view9_cont_wrapper gallery-img-content" id="video_view9_cont_wrapper<?= $galleryID; ?>"
-     data-rating-type="<?php echo $like_dislike; ?>">
-	<div id="video_view9_cont_list<?= $galleryID; ?>" class="video_view9_cont_list view-<?php echo $view_slug; ?>">
+<div class="video_view9_cont_wrapper gallery-img-content" id="video_view9_cont_wrapper<?php echo $galleryID; ?>"
+	 data-content-per-page="<?php echo $num; ?>"
+	 data-gallery-id="<?php echo $galleryID; ?>" 
+	 data-rating-type="<?php echo $like_dislike; ?>">
+	<div id="video_view9_cont_list<?php echo $galleryID; ?>" class="video_view9_cont_list view-<?php echo $view_slug; ?>">
 		<?php
 		global $wpdb;
 		?>

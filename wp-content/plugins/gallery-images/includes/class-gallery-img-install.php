@@ -129,15 +129,15 @@ CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "huge_itgallery_gallerys` (
 		$sql_2      = "
 INSERT INTO 
 `" . $table_name . "` (`id`, `name`, `gallery_id`, `description`, `image_url`, `sl_url`, `sl_type`, `link_target`, `ordering`, `published`, `published_in_sl_width`) VALUES
-(1, 'Rocky Balboa', '1', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/1.jpg" . "', 'http://huge-it.com/fields/order-website-maintenance/', 'image', 'on', 0, 1, NULL),
-(2, 'Skiing alone', '1', '<ul><li>lorem ipsumdolor sit amet</li><li>lorem ipsum dolor sit amet</li></ul><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/2.jpg" . "', 'http://huge-it.com/fields/order-website-maintenance/', 'image', 'on', 1, 1, NULL),
-(3, 'Summer dreams', '1', '<h6>Lorem Ipsum </h6><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><ul><li>lorem ipsum</li><li>dolor sit amet</li><li>lorem ipsum</li><li>dolor sit amet</li></ul>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/3.jpg" . "', 'http://huge-it.com/fields/order-website-maintenance/', 'image', 'on', 2, 1, NULL),
-(4, 'Mr. Cosmo Kramer', '1', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><h7>Dolor sit amet</h7><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/4.jpg" . "', 'http://huge-it.com/fields/order-website-maintenance/', 'image', 'on', 3, 1, NULL),
-(5, 'Edgar Allan Poe', '1', '<h6>Lorem Ipsum</h6><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/5.jpg" . "', 'http://huge-it.com/fields/order-website-maintenance/', 'image', 'on', 4, 1, NULL),
-(6, 'Fix the moment !', '1', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/6.jpg" . "', 'http://huge-it.com/fields/order-website-maintenance/', 'image', 'on', 5, 1, NULL),
-(7, 'Lions eyes', '1', '<h6>Lorem Ipsum</h6><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/7.jpg" . "', 'http://huge-it.com/fields/order-website-maintenance/', 'image', 'on', 6, 1, NULL),
-(8, 'Photo with exposure', '1', '<h6>Lorem Ipsum </h6><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><ul><li>lorem ipsum</li><li>dolor sit amet</li><li>lorem ipsum</li><li>dolor sit amet</li></ul>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/8.jpg" . "', 'http://huge-it.com/fields/order-website-maintenance/', 'image', 'on', 7, 1, NULL),
-(9, 'Travel with music', '1', '<h6>Lorem Ipsum </h6><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><ul><li>lorem ipsum</li><li>dolor sit amet</li><li>lorem ipsum</li><li>dolor sit amet</li></ul>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/9.jpg" . "', 'http://huge-it.com/fields/order-website-maintenance/', 'image', 'on', 7, 1, NULL)";
+(1, 'Rocky Balboa', '1', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/1.jpg" . "', 'http://huge-it.com/wordpress-plugins-gallery-demo/#plugin_demo_wrapper', 'image', 'on', 0, 1, NULL),
+(2, 'Skiing alone', '1', '<ul><li>lorem ipsumdolor sit amet</li><li>lorem ipsum dolor sit amet</li></ul><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/2.jpg" . "', 'http://huge-it.com/wordpress-gallery-demo-2-content-slider/#plugin_demo_wrapper', 'image', 'on', 1, 1, NULL),
+(3, 'Summer dreams', '1', '<h6>Lorem Ipsum </h6><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><ul><li>lorem ipsum</li><li>dolor sit amet</li><li>lorem ipsum</li><li>dolor sit amet</li></ul>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/3.jpg" . "', 'http://huge-it.com/wordpress-gallery-demo-3-lightbox-gallery/#plugin_demo_wrapper', 'image', 'on', 2, 1, NULL),
+(4, 'Mr. Cosmo Kramer', '1', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><h7>Dolor sit amet</h7><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/4.jpg" . "', 'http://huge-it.com/wordpress-gallery-demo-4-slideshow/#plugin_demo_wrapper', 'image', 'on', 3, 1, NULL),
+(5, 'Edgar Allan Poe', '1', '<h6>Lorem Ipsum</h6><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/5.jpg" . "', 'http://huge-it.com/wordpress-gallery-demo-5-thumbnails/#plugin_demo_wrapper', 'image', 'on', 4, 1, NULL),
+(6, 'Fix the moment !', '1', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/6.jpg" . "', 'http://huge-it.com/wordpress-gallery-demo-6-justified-gallery/#plugin_demo_wrapper', 'image', 'on', 5, 1, NULL),
+(7, 'Lions eyes', '1', '<h6>Lorem Ipsum</h6><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/7.jpg" . "', 'http://huge-it.com/wordpress-gallery-demo-7-blog-style-view/#plugin_demo_wrapper', 'image', 'on', 6, 1, NULL),
+(8, 'Photo with exposure', '1', '<h6>Lorem Ipsum </h6><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><ul><li>lorem ipsum</li><li>dolor sit amet</li><li>lorem ipsum</li><li>dolor sit amet</li></ul>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/8.jpg" . "', 'http://huge-it.com/wordpress-plugins-gallery-demo/#plugin_demo_wrapper', 'image', 'on', 7, 1, NULL),
+(9, 'Travel with music', '1', '<h6>Lorem Ipsum </h6><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><ul><li>lorem ipsum</li><li>dolor sit amet</li><li>lorem ipsum</li><li>dolor sit amet</li></ul>', '" . GALLERY_IMG_IMAGES_URL . "/front_images/projects/9.jpg" . "', 'http://huge-it.com/wordpress-gallery-demo-2-content-slider/#plugin_demo_wrapper', 'image', 'on', 7, 1, NULL)";
 		$table_name = $wpdb->prefix . "huge_itgallery_gallerys";
 		$sql_3      = "
 INSERT INTO `$table_name` (`id`, `name`, `sl_height`, `sl_width`, `pause_on_hover`, `gallery_list_effects_s`, `description`, `param`, `sl_position`, `ordering`, `published`, `huge_it_sl_effects`) VALUES
@@ -155,8 +155,8 @@ INSERT INTO `$table_name` (`id`, `name`, `sl_height`, `sl_width`, `pause_on_hove
 		////////////////////////////////////////
 		$imagesAllFieldsInArray2 = $wpdb->get_results( "DESCRIBE " . $wpdb->prefix . "huge_itgallery_gallerys", ARRAY_A );
 		$fornewUpdate            = 0;
-		foreach ( $imagesAllFieldsInArray2 as $portfoliosField2 ) {
-			if ( $portfoliosField2['Field'] == 'display_type' ) {
+		foreach ( $imagesAllFieldsInArray2 as $galleriesField2 ) {
+			if ( $galleriesField2['Field'] == 'display_type' ) {
 				$fornewUpdate = 1;
 			}
 		}
@@ -167,8 +167,8 @@ INSERT INTO `$table_name` (`id`, `name`, `sl_height`, `sl_width`, `pause_on_hove
 		///////////////////////////////////////////////////////////////////////
 		$imagesAllFieldsInArray3 = $wpdb->get_results( "DESCRIBE " . $wpdb->prefix . "huge_itgallery_images", ARRAY_A );
 		$fornewUpdate2           = 0;
-		foreach ( $imagesAllFieldsInArray3 as $portfoliosField3 ) {
-			if ( $portfoliosField3['Field'] == 'sl_url' && $portfoliosField3['Type'] == 'text' ) {
+		foreach ( $imagesAllFieldsInArray3 as $galleriesField3 ) {
+			if ( $galleriesField3['Field'] == 'sl_url' && $galleriesField3['Type'] == 'text' ) {
 				$fornewUpdate2 = 1;
 			}
 		}
@@ -179,8 +179,8 @@ INSERT INTO `$table_name` (`id`, `name`, `sl_height`, `sl_width`, `pause_on_hove
 		///////////////////////////////////////////////////////////////////////
 		$imagesAllFieldsInArray4 = $wpdb->get_results( "DESCRIBE " . $wpdb->prefix . "huge_itgallery_images", ARRAY_A );
 		$fornewUpdate3           = 0;
-		foreach ( $imagesAllFieldsInArray4 as $portfoliosField4 ) {
-			if ( $portfoliosField4['Field'] == 'like' ) {
+		foreach ( $imagesAllFieldsInArray4 as $galleriesField4 ) {
+			if ( $galleriesField4['Field'] == 'like' ) {
 				$fornewUpdate3 = 1;
 			}
 		}
@@ -191,8 +191,8 @@ INSERT INTO `$table_name` (`id`, `name`, `sl_height`, `sl_width`, `pause_on_hove
 		//ADDING Rating COLUMNS
 		$imagesAllFieldsInArray5 = $wpdb->get_results( "DESCRIBE " . $wpdb->prefix . "huge_itgallery_gallerys", ARRAY_A );
 		$fornewUpdate4           = 0;
-		foreach ( $imagesAllFieldsInArray5 as $portfoliosField5 ) {
-			if ( $portfoliosField5['Field'] == 'rating' ) {
+		foreach ( $imagesAllFieldsInArray5 as $galleriesField5 ) {
+			if ( $galleriesField5['Field'] == 'rating' ) {
 				$fornewUpdate4 = 1;
 			}
 		}
@@ -202,8 +202,8 @@ INSERT INTO `$table_name` (`id`, `name`, `sl_height`, `sl_width`, `pause_on_hove
 		/////////////////////////////////////////////
 		$imagesAllFieldsInArray6 = $wpdb->get_results( "DESCRIBE " . $wpdb->prefix . "huge_itgallery_gallerys", ARRAY_A );
 		$fornewUpdate5           = 0;
-		foreach ( $imagesAllFieldsInArray6 as $portfoliosField6 ) {
-			if ( $portfoliosField5['Field'] == 'autoslide' ) {
+		foreach ( $imagesAllFieldsInArray6 as $galleriesField6 ) {
+			if ( $galleriesField5['Field'] == 'autoslide' ) {
 				$fornewUpdate5 = 1;
 			}
 		}

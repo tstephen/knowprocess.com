@@ -62,7 +62,8 @@ function Gallery_Img_Content_Popup(id) {
                 }
             }
         };
-        galleryImgIsotope(_this.container.children(), options);
+        galleryImgIsotope(_this.container.children().first());
+        galleryImgIsotope(_this.container.children().first(), options);
         galleryImgRatingCountsOptimize(_this.container, _this.ratingType);
         galleryImgRatingCountsOptimize(_this.popupList, _this.ratingType);
     };
@@ -86,7 +87,7 @@ function Gallery_Img_Content_Popup(id) {
                 "overflow": "hidden"
             });
             var loadInterval = setInterval(function(){
-                galleryImgIsotope(_this.container.children(), 'reLayout');
+                galleryImgIsotope(_this.container.children(), 'layout');
             },100);
             setTimeout(function(){clearInterval(loadInterval);},7000);
         }
@@ -245,7 +246,7 @@ function Gallery_Img_Content_Popup(id) {
     _this.resizeEvent = function () {
         var iframeHeight = _this.popupList.find('.popup-wrapper .image-block').width() * 0.5;
         _this.popupList.find('.popup-wrapper .image-block iframe').height(iframeHeight);
-        galleryImgIsotope(_this.container.children(), 'reLayout');
+        galleryImgIsotope(_this.container.children(), 'layout');
         _this.showCenter();
 
     };
@@ -274,8 +275,8 @@ function Gallery_Img_Content_Popup(id) {
         var contentLoadNonce = jQuery(this).attr('data-content-nonce-value');
         if (parseInt(_this.content.find(".pagenum:last").val()) < parseInt(_this.container.find("#total").val())) {
             var pagenum = parseInt(_this.content.find(".pagenum:last").val()) + 1;
-            var perpage = gallery_obj[0].content_per_page;
-            var galleryid = gallery_obj[0].id;
+            var perpage = _this.content.attr('data-content-per-page');
+            var galleryid = _this.content.attr('data-gallery-id');
             var linkbutton = param_obj.gallery_img_ht_view2_element_linkbutton_text;
             var showbutton = param_obj.gallery_img_ht_view2_element_show_linkbutton;
             var pID = postID;
@@ -306,11 +307,13 @@ function Gallery_Img_Content_Popup(id) {
         jQuery.post(adminUrl, data, function (response) {
                 if (response.success) {
                     var $objnewitems = jQuery(response.success);
-                    _this.container.children().append($objnewitems);
+                    _this.container.children().first().append($objnewitems);
+                    galleryImgIsotope(_this.container.children().first());
                     setTimeout(function () {
+                        galleryImgIsotope(_this.container.children().first());
                         galleryImgIsotope(_this.container.children().first(), 'reloadItems');
                         galleryImgIsotope(_this.container.children().first(), {sortBy: 'original-order'});
-                        galleryImgIsotope(_this.container.children().first(), 'reLayout');
+                        galleryImgIsotope(_this.container.children().first(), 'layout');
                     }, 100);
 
                     _this.container.children().find('img').on('load', function () {

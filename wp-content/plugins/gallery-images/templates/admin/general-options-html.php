@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 ?>
 
 <div class="wrap">
-    <?php require(GALLERY_IMG_TEMPLATES_PATH.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'gallery-img-admin-free-banner.php');?>
+    <?php require(GALLERY_IMG_TEMPLATES_PATH.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'free-banner.php');?>
     <p class="pro_info">
         <?php echo __('These features are available in the Professional version of the plugin only.', 'gallery-images'); ?>
         <a href="http://huge-it.com/wordpress-gallery/" target="_blank" class="button button-primary"><?php echo __('Enable','gallery-images'); ?></a>
@@ -35,6 +35,9 @@ if (!defined('ABSPATH')) {
                         <li><a href="#gallery-view-options-5"><?php echo __('Justified', 'gallery-images'); ?></a></li>
                         <li>
                             <a href="#gallery-view-options-6"><?php echo __('Blog Style Gallery', 'gallery-images'); ?></a>
+                        </li>
+	                    <li>
+                            <a href="#gallery-view-options-7"><?php echo __('Elastic Grid', 'gallery-images'); ?></a>
                         </li>
                     </ul>
                     <ul class="options-block" id="gallery-view-tabs-contents">
@@ -67,6 +70,10 @@ if (!defined('ABSPATH')) {
                             <img style="width: 100%;margin-top: -12px;"
                                  src='<?php echo GALLERY_IMG_IMAGES_URL . '/admin_images/block-tab-7.png'; ?>'>
                         </li>
+	                    <li class="gallery-view-options-7">
+		                    <img style="width: 100%;margin-top: -12px;"
+		                         src='<?php echo GALLERY_IMG_IMAGES_URL . '/admin_images/elastic-options.jpg'; ?>'>
+	                    </li>
                     </ul>
                 </div>
             </div>

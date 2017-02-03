@@ -30,9 +30,26 @@ class Gallery_Img_Shortcode {
 		), $attrs );
 
 		global $wpdb;
+
+		$query        = $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "huge_itgallery_gallerys WHERE id=%d", $attrs['id'] );
+		$gallery = $wpdb->get_results( $query );
+		if( !$gallery ){
+			ob_start();
+			printf( __( "Gallery with ID %s doesn't exist.","gallery-img" ), $attrs['id'] );
+			return ob_get_clean();
+		}
+
+		$query        = $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "huge_itgallery_images WHERE gallery_id=%d", $attrs['id'] );
+		$images_row   = $wpdb->get_results( $query );
+		if( !$images_row ){
+			ob_start();
+			printf( __( "Gallery with ID %s is empty.","gallery-img" ), $attrs['id'] );
+			return ob_get_clean();
+		}
+
 		$query        = $wpdb->prepare( "SELECT huge_it_sl_effects FROM " . $wpdb->prefix . "huge_itgallery_gallerys WHERE id=%d", $attrs['id'] );
 		$gallery_view = $wpdb->get_var( $query );
-		$query = $wpdb->prepare( "SELECT image_url FROM " . $wpdb->prefix . "huge_itgallery_images WHERE gallery_id=%d", $attrs['id'] );
+		$query = $wpdb->prepare( "SELECT image_url FROM " . $wpdb->prefix . "huge_itgallery_images WHERE gallery_id=%d and sl_type!='video'", $attrs['id'] );
 		$images       = $wpdb->get_col( $query );
 
 		do_action( 'gallery_img_shortcode_scripts', $attrs['id'], $gallery_view );
@@ -51,7 +68,7 @@ class Gallery_Img_Shortcode {
 	protected function init_frontend( $id ) {
 		global $wpdb;
 
-		$query  = $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "huge_itgallery_images where gallery_id = '%d' order by ordering ASC", $id );
+		$query  = $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "huge_itgallery_images where gallery_id = '%d' and sl_type!='video' order by ordering ASC", $id );
 		$images = $wpdb->get_results( $query );
 
 		$query   = $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "huge_itgallery_gallerys where id = '%d' order by id ASC", $id );
@@ -89,10 +106,8 @@ class Gallery_Img_Shortcode {
 	 * Inline popup contents
 	 */
 	public function inline_popup_content() {
-		require GALLERY_IMG_TEMPLATES_PATH . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'gallery-img-admin-inline-popup-content-html.php';
+		require GALLERY_IMG_TEMPLATES_PATH . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'inline-popup-content-html.php';
 	}
 
 
 }
-
-new Gallery_Img_Shortcode();
