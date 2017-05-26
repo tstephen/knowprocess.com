@@ -1,3 +1,127 @@
+/* tooltip */
+.help {
+    display: inline-block;
+    position: relative;
+    float:right;
+    border-radius: 50%;
+    color: #757575;
+    border: 1px solid #757575;
+    font-size: 13px;
+    width: 17px;
+    height: 17px;
+    text-align: center;
+    line-height: 15px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+.help-block {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    background: rgba(97,97,97,.9);
+    border-radius: 2px;
+    color: #fff;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 14px;
+    min-width: 250px;
+    padding: 8px;
+    text-align: center;
+    position: absolute;
+    top: 22px;
+    left: -3px;
+    z-index: 10;
+
+}
+.help:hover .help-block {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    transition: all .2s ease-in-out;
+}
+.help-block p {
+    padding:0;
+    margin:0;
+    text-indent: 0;
+}
+/* tooltip */
+.widePercents {
+    width:100%;
+
+}
+
+
+.unique-type-options-wrapper.active{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.unique-type-options-wrapper{
+    display: none;
+}
+
+#new-lightbox-options-list{
+    clear: both;
+}
+
+#new-lightbox-options-list .social-buttons-list {
+    height: auto;
+}
+
+#new-lightbox-options-list .social-buttons-list > div {
+    display: inline-block;
+    width: 100%;
+}
+
+#new-lightbox-options-list .social-buttons-list > div table label input{
+    position: absolute;
+    left: 65%;
+    top: 0;
+}
+
+#new-lightbox-options-list .social-buttons-list > div table label{
+    width: 100%;
+    position: relative;
+}
+
+#new-lightbox-options-list .social-buttons-list > div table{
+    width: 98%;
+    margin-left: 2%;
+}
+
+.unique-type-options-wrapper{
+    display: none;
+}
+
+#lightbox_type > li {
+    padding: 5px 0 5px 1%;
+    font-size: 16px;
+    display: inline-block;
+    float: left;
+    margin: 0;
+}
+
+#lightbox_type label {
+    margin-right: 7px;
+}
+
+#lightbox_type input {
+    margin: 2px 10px 0 0 !important;
+}
+
+#lightbox_type {
+    border-bottom: 1px solid #ddd;
+    height: 30px;
+}
+
+#lightbox_type > li.active {
+    background-color: #f9f9f9;;
+    padding-bottom: 6px;
+}
+
+#lightbox_type input[type="radio"]:before{
+    content: none;
+}
+
 /*Christmas banner*/
 .backend-christmas-banner {
     width: 100%;
@@ -221,6 +345,16 @@ a.delete-link {
     position: absolute;
     z-index: 10;
 }
+.gallery_img_lightbox_options_grey_overlay:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .2);
+}
 
 .lightbox-grey-wrapper:before {
     content: "";
@@ -363,7 +497,7 @@ a.delete-link {
     padding: 0 0 0 10px;
 }
 
-#gallery-unique-options-list li input[type='text'], #gallery-unique-options-list li select {
+#gallery-unique-options-list li input[type='text'], input[type='number'], #gallery-unique-options-list li select {
     width: 150px;
 }
 
@@ -385,7 +519,7 @@ a.delete-link {
 /*CONTENT*/
 #post-body-heading {
     width: 100%;
-    padding: 10px 0 10px 0;
+    padding: 10px 0 20px 0;
     height: 30px;
     background: #fff;
     border-bottom: 1px solid #e5e5e5;
@@ -545,7 +679,7 @@ a.delete-link {
     padding: 10px 0 0 0;
 }
 
-#images-list .image-options input[type='text'], #images-list .image-options select, #images-list .image-options textarea {
+#images-list .image-options input[type='text'], input[type='number'] #images-list .image-options select, #images-list .image-options textarea {
     width: 93%;
 }
 
@@ -683,10 +817,18 @@ a.delete-link {
 #gallery-view-tabs-contents > li > div h3 {
     display: block;
     text-align: center;
-    margin: 0 0 10px 0;
+
 }
 
 #gallery-view-tabs-contents > li > div > div {
+    position: relative;
+    clear: both;
+    width: 100%;
+    height: 35px;
+    padding: 5px 0 0 0 !important;
+    margin: 0 !important;
+}
+#gallery-view-tabs-contents > li > div > div  > div{
     position: relative;
     clear: both;
     width: 100%;
@@ -1371,4 +1513,17 @@ a.delete-link {
     .gallery_free_version_banner .description_text {
         margin-top: 40px;
     }
+}
+/*lazy css optimize*/
+#gallery-options-list .blockMarg1 {
+    margin-top: 45px;
+}
+.noneDisplay {
+    display: none;
+}
+.adminWidth{
+    width: 95%;
+}
+.numb_area {
+    width: 150px;
 }

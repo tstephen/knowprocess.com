@@ -10,6 +10,7 @@
 			<input type="hidden" class="pagenum" value="1"/>
 			<input type="hidden" id="total" value="<?php echo $total; ?>"/>
 			<?php
+			echo "count(page_images)".count($page_images);
 			foreach ( $page_images as $key => $row ) {
 				if ( ! isset( $_COOKIE[ 'Like_' . $row->id . '' ] ) ) {
 					$_COOKIE[ 'Like_' . $row->id . '' ] = '';
@@ -171,11 +172,12 @@
 				<?php
 			} ?>
 		</div>
-		<div style="clear:both;"></div>
+		<div class="clear"></div>
 	</div>
 	<?php
 	$a = $disp_type;
-	if ( $a == 1 ) {
+
+	if ( ($a == 1)&&(count($images)>$num) ) {
 		$gallery_img_content_load_nonce = wp_create_nonce( 'gallery_img_content_load_nonce' );
 		?>
 		<div class="load_more5">
@@ -200,7 +202,7 @@
 		<div class="paginate5">
 			<?php
 			$protocol    = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-			$actual_link = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "";
+            $actual_link = esc_url($protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "");
 			$checkREQ    = '';
 			$pattern     = "/\?p=/";
 			$pattern2    = "/&page-img[0-9]+=[0-9]+/";
@@ -244,7 +246,7 @@
 		?>
 		<li class="pupup-element" id="huge_it_gallery_pupup_element_<?php echo $row->id; ?>">
 			<div class="heading-navigation heading-navigation_<?php echo $galleryID; ?>">
-				<div style="display: inline-block; float: left;">
+				<div class="inlineLeft">
 					<div class="left-change"><a href="#<?php echo $changePopup - 1; ?>"
 					                            data-popupid="#<?php echo $row->id; ?>">&lt;</a></div>
 					<div class="right-change"><a href="#<?php echo $changePopup + 1; ?>"
@@ -252,7 +254,7 @@
 				</div>
 				<?php $changePopup = $changePopup + 1; ?>
 				<a href="#close" class="close"></a>
-				<div style="clear:both;"></div>
+				<div class="clear"></div>
 			</div>
 			<div class="popup-wrapper popup-wrapper_<?php echo $galleryID; ?>">
 				<div class="image-block image-block_<?php echo $galleryID; ?>">
@@ -422,9 +424,9 @@
 					<?php if ( $gallery_default_params["gallery_img_ht_view2_show_popup_linkbutton"] == 'on' ) { ?>
 						<?php echo $viwMoreButton; ?>
 					<?php } ?>
-					<div style="clear:both;"></div>
+					<div class="clear"></div>
 				</div>
-				<div style="clear:both;"></div>
+				<div class="clear"></div>
 			</div>
 		</li>
 		<?php

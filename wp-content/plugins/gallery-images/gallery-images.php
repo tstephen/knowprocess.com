@@ -1,12 +1,12 @@
 <?php
 
 /*
-Plugin Name: Gallery
-Plugin URI: http://huge-it.com/wordpress-gallery/
+Plugin Name: Huge IT Image Gallery
+Plugin URI: https://huge-it.com/wordpress-gallery/
 Description: Gallery image is the best gallery plugin to use if you want to be original with your website. Responsive image gallery with many views.
-Version: 2.1.2
+Version: 2.2.0
 Author: Huge-IT
-Author: http://huge-it.com/
+Author URI: https://huge-it.com/
 License: GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
 */
 
@@ -24,7 +24,7 @@ if ( ! class_exists( 'Gallery_Img' ) ) :
          * Version of plugin
          * @var float
          */
-        public $version = '2.1.1';
+        public $version = '2.2.0';
 
         /**
          * Instance of Gallery_Img_Admin class to manage admin
@@ -150,7 +150,7 @@ if ( ! class_exists( 'Gallery_Img' ) ) :
                 include_once( 'includes/admin/gallery-img-admin-functions.php' );
             }
             if ( $this->is_request( 'frontend' ) ) {
-                $this->frontend_includes();
+                    $this->frontend_includes();
             }
 
         }
@@ -175,6 +175,8 @@ if ( ! class_exists( 'Gallery_Img' ) ) :
         public function init() {
             // Before init action.
             do_action( 'before_Gallery_Img_init' );
+
+            Gallery_Img_Install::init();
 
             $this->template_loader = new Gallery_Img_Template_Loader();
 
