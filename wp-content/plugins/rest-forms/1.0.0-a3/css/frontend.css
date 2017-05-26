@@ -33,11 +33,17 @@ textarea ~ .field-hint {
   line-height: 0em;
 }
 
-input:focus:invalid ~ .field-hint, 
-select:focus:invalid ~ .field-hint, 
+input:focus ~ .field-hint,
+select:focus ~ .field-hint,
+textarea:focus ~ .field-hint { 
+  visibility: visible ;
+  line-height: 1.5em;
+}
+
+input:focus:invalid ~ .field-hint,
+select:focus:invalid ~ .field-hint,
 textarea:focus:invalid ~ .field-hint { 
   color: #f33 ;
-  visibility: visible ;
   line-height: 1.5em;
 }
 
