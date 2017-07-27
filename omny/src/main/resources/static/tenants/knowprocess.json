@@ -2,9 +2,9 @@
   "id": "knowprocess", 
   "name": "Know Process",
   "theme": {
-    "logoUrl": "http://knowprocess.com/omny/images/knowprocess-logo.png",
-    "iconUrl": "http://knowprocess.com/omny/images/knowprocess-icon-16x16.png",
-    "cssUrl": "http://knowprocess.com/omny/css/knowprocess.css"
+    "logoUrl": "http://knowprocess.com/omny/src/main/resources/static/images/knowprocess-logo.png",
+    "iconUrl": "http://knowprocess.com/omny/src/main/resources/static/images/knowprocess-icon-16x16.png",
+    "cssUrl": "http://knowprocess.com/omny/src/main/resources/static/css/knowprocess.css"
   },
   "show": { 
     "account":true, "activityAnalysis":true, "activityTracker":true, 
