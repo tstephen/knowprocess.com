@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>Omny Link configuration for KnowProcess</name>
+  <inceptionYear>2016</inceptionYear>
+
+  <artifactId>knowprocess-omny</artifactId>
+  <packaging>jar</packaging>
+
+  <parent>
+    <groupId>com.knowprocess</groupId>
+    <artifactId>knowprocess-root</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
+
+  <properties>
+    <activiti.bdd.version>5.19.0.20160314</activiti.bdd.version>
+    <work-mgmt.version>2.0.0.0-beta-10</work-mgmt.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.knowprocess.bpm</groupId>
+      <artifactId>work-mgmt</artifactId>
+      <version>${work-mgmt.version}</version>
+      <!-- TODO Debug fails with class not found if this is enabled 
+      <classifier>library</classifier>-->
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.3.168</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.toxos.activiti</groupId>
+      <artifactId>process-assertions</artifactId>
+      <version>0.5.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.subethamail</groupId>
+      <artifactId>subethasmtp-wiser</artifactId>
+      <version>1.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-bdd</artifactId>
+      <version>${activiti.bdd.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>link.omny</groupId>
+      <artifactId>omny-link-processes</artifactId>
+      <version>1.0.0.0-beta-10</version>
+      <scope>test</scope>    
+    </dependency>
+    <dependency>
+		  <groupId>com.knowprocess.activiti</groupId>
+		  <artifactId>service-tasks</artifactId>
+		  <version>2.0.0.0-beta-10</version>
+		  <scope>test</scope>    
+    </dependency>
+  </dependencies>
+  
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>2.6</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

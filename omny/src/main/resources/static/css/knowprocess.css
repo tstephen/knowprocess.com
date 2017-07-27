@@ -1,0 +1,116 @@
+/* FONTS */ 
+
+
+/* END FONTS */
+
+/*
+ * COLOURS
+ *
+ * dark blue: #004684
+ * pale blue: #a6cae1
+ * dark grey: #414141
+ * mid blue:  #1b67bb
+ * pale grey: #acacac
+ * pale green: #e3ce02
+ * gold: #e3ce02
+ */
+
+/* BOOTSTRAP OVERRIDES */
+body,
+.navbar-sticky,
+.navbar-top {
+	background-color: #414141;
+  color: #1b67bb;
+}
+h1 { 
+  color: #004684;
+}
+section h2 {
+	border-bottom: solid 1px #e3ce02;
+	color: #1b67bb;
+}
+section h3 {
+  border-bottom: solid 1px #a6cae1;
+  color: #a6cae1;
+}
+section h2 .search {
+  bottom: 5px;
+  width: 40%;
+}
+section h2 .glyphicon-search {
+  top: 1px;
+}
+section h2 .search,
+section h2 .entity,
+section h2 .file {
+  background-color: #acacac;
+  border-color: #acacac;
+  color: #414141;
+}
+section h3 {
+	font-size: 20px;
+}
+a.glyphicon,
+a.glyphicon:visited,
+.glyphicon,
+.glyphicon:visited, 
+h2 a.glyphicon, 
+h2 a.glyphicon:visited {
+  color: #a6cae1;
+}
+section h2 a.glyphicon:hover,
+section h2 a.glyphicon:focus,
+section h2 .glyphicon:hover,
+section h2 .glyphicon:focus,
+a.glyphicon:hover,
+a.glyphicon:focus,
+.glyphicon:hover,
+.glyphicon:focus {
+  color: #e3ce02;
+}
+h1.navbar-top span {
+    padding-left: 20px;
+}
+.navbar-brand img {
+  height: 70px;
+}
+.form-control, .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+  background-color: #acacac;
+  border-color: #acacac;
+}
+.table>thead>tr>th {
+  border-bottom-color: #333;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+  border-top-color: #333;
+}
+/* END BOOTSTRAP OVERRIDES */
+.omny-bar {
+  background-color: #a6cae1;
+  color: #004684;
+}
+.omny-bar li span.glyphicon,
+.omny-bar li span.glyphicon:visited {
+  color: #004684;
+  background-color: #a6cae1;
+}
+.omny-bar li span.glyphicon:hover,
+.omny-bar li span.glyphicon:active,
+.omny-bar li span.glyphicon.active {
+  color: #a6cae1;
+  background-color: #004684;
+}
+.omny-bar-left li span:not(.active):not(:active):not(:hover) {
+  border-bottom-color: #004684;
+}
+
+.support-bar {
+  background-color: #004684;
+}
+.support-bar .glyphicon {
+  color: #e3ce02; /* gold */
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+  background-color: #393939;
+}

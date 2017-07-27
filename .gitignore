@@ -9,6 +9,9 @@
 .htaccess
 .maintenance
 
+**/.*
+omny/target
+
 wp-config.php
 sitemap.xml
 sitemap.xml.gz

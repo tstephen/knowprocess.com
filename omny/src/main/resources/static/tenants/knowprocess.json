@@ -1,0 +1,118 @@
+{ 
+  "id": "knowprocess", 
+  "name": "Know Process",
+  "theme": {
+    "logoUrl": "http://knowprocess.com/omny/images/knowprocess-logo.png",
+    "iconUrl": "http://knowprocess.com/omny/images/knowprocess-icon-16x16.png",
+    "cssUrl": "http://knowprocess.com/omny/css/knowprocess.css"
+  },
+  "show": { 
+    "account":true, "activityAnalysis":true, "activityTracker":true, 
+    "budget":false, "companyBackground":false,
+    "documents": true, "financials":false, 
+    "marketing":true, "merge":true, "supportBar": true
+  },
+  "accountFields": [ 
+  ],
+  "contactActions": [
+    { "name": "Add task", "ref": "SimpleToDo", "url": true },
+    { "name": "Send email", "ref": "SendMemo", "url": true  }
+  ],
+  "contactFields": [ 
+  ],
+  "toolbar": [
+    { "url": "work.html", "icon": "glyphicon-inbox", "description": "View your list of active tasks here", "name": "Work Management" },
+    { "url": "contacts.html", "icon": "omny-icon-address-book", "description": "Find a particular contact", "name": "Contact Management" },
+    { "url": "decisions-ui.html", "icon": "glyphicon-list-alt", "description": "View and manage your decisions here", "name": "Decisions Definer", "role": "super_admin" },
+    { "url": "domain.html", "icon": "omny-icon-domain-model", "name": "Domain Model", "description": "Business glossary", "role": "super_admin" },
+    { "url": "decisions-dmn.html", "icon": "glyphicon-list-alt", "name": "Decisions Repository", "description": "Home of your Decision Models", "role": "super_admin" },
+    { "url": "memo-distribution.html", "icon": "glyphicon-send", "name": "Distribution Centre", "description": "Send messages to groups of contacts", "role": "admin" },
+    { "url": "memo.html", "icon": "glyphicon-envelope", "name": "Templates", "description": "Create and edit your message templates", "role": "admin"  },
+    { "url": "funnel.html", "icon": "glyphicon-filter", "description": "View your sales funnel", "name": "Funnel" },
+    { "url": "definitions.html", "icon": "omny-icon-process-model", "description": "View your process definitions here", "name": "Process Definitions" },    
+    { "url": "admin/users.html", "icon": "omny-icon-user", "name": "User Management", "description": "Manage users", "role": "super_admin" },
+    { "url": "status.html", "icon": "glyphicon-thumbs-up", "name": "Status", "description": "Check various aspects of the tenant's configuration", "role": "admin" },
+    { "url": "admin/dash.html", "icon": "glyphicon-king", "name": "Admin", "description": "Admin Dashboard", "role": "super_admin" }
+  ],
+  "partials": [
+    { "name": "knowprocessContactExtension", "url": "/partials/contact-extension.html"},
+    { "name": "knowprocessAccountExtension", "url": "/partials/account-extension.html"},
+    { "name": "knowprocessSimpleToDo", "url": "/partials/simple-todo.html"},
+    { "name": "knowprocessSendMemo", "url": "/partials/pick-memo.html"},
+    { "name": "knowprocessWorkflowWizard", "url": "/partials/workflow-wizard.html"}
+  ],
+  "processes": [
+    { "name": "Add activity to contact", "ref": "AddActivityToContact", "url": "processes/link/omny/custmgmt/AddActivityToContact.bpmn" },
+    { "name": "Add note to contact", "ref": "AddNoteToContact", "url": "processes/link/omny/custmgmt/AddNoteToContact.bpmn" },
+    { "name": "Ad-Hoc Task from external", "ref": "HandleAdHocTask", "url": "processes/link/omny/casemgmt/HandleAdHocTask.bpmn" },
+    { "name": "Check service levels", "ref": "RunDecisionLogicForAllContacts", "url": "processes/link/omny/custmgmt/RunDecisionLogicForAllContacts.bpmn" },
+    { "name": "Create contact and account", "ref": "CreateContactAndAccount", "url": "processes/link/omny/custmgmt/CreateContactAndAccount.bpmn" },
+    { "name": "De-duplicate contact and account", "ref": "DedupeContact", "url": "processes/link/omny/custmgmt/DedupeContact.bpmn" },
+    { "name": "Import contact", "ref": "ImportContact", "url": "processes/link/omny/website/ImportContact.bpmn" },
+    { "name": "Record an enquiry", "ref": "RecordEnquiry", "url": "processes/link/omny/website/RecordEnquiry.bpmn" },
+    { "name": "Register a user", "ref": "RegisterOmnyContact", "url": "processes/link/omny/website/RegisterOmnyContact.bpmn" },
+    { "name": "Reset user's password", "ref": "ResetPassword", "url": "processes/link/omny/support/ResetPassword.bpmn" },
+    { "name": "Select enquiry response", "ref": "SelectEnquiryResponse", "url": "processes/link/omny/mail/SelectDefaultEnquiryResponse.bpmn" },
+    { "name": "Send memo", "ref": "SendMemo", "url": "processes/link/omny/mail/SendMemo.bpmn" },
+    { "name": "Send alert", "ref": "SendAlert", "url": "processes/link/omny/alerts/SendAlertMemo.bpmn" },
+    { "name": "Send alert to contact's owner", "ref": "SendAlertToOwner", "url": "processes/link/omny/alerts/SendAlertToOwner.bpmn" },
+    { "name": "Catch all", "ref": "CatchAllProcess", "url": "processes/link/omny/support/CatchAllProcessPostToSlack.bpmn" },
+    { "name": "Add task", "ref": "SimpleToDo", "url": "processes/link/omny/casemgmt/SimpleToDo.bpmn" },
+    { "name": "Fetch company information", "ref": "companyRecord", "url": "processes/link/omny/companiesHouse/FetchCompanyInfo.bpmn" },
+    { "name": "Search for companies", "ref": "companySearch", "url": "processes/link/omny/companiesHouse/SearchForCompany.bpmn" },
+    { "name": "Update contact with decision logic", "ref": "UpdateContactWithDecisionLogic", "url": "processes/link/omny/custmgmt/UpdateContactWithDecisionLogic.bpmn" },
+    { "name": "Update service level alerts", "ref": "RunDecisionLogicOnContact", "url": "processes/link/omny/alerts/RunAlertDecisionLogicOnContact.bpmn" }
+  ],
+  "serviceLevel": {
+    "inactiveStages":["discovery","review"],
+    "inactivityReminderThreshold":0,
+    "inactivityThreshold":360,
+    "initialResponseThreshold":7
+  },
+  "templates": [
+    { "name": "NotifyEnquiry", "ref": "NotifyEnquiry" },
+    { "name": "NotifyToDo", "ref": "NotifyToDo" },
+    { "name": "Notify outstanding work", "ref": "NotifyToDoOutstanding" },
+    { "name": "ResetPassword", "ref": "ResetPassword" },
+    { "name": "ThankYouForEnquiry", "ref": "ThankYouForEnquiry" },
+    { "name": "WelcomeNewUser", "ref": "WelcomeNewUser" }
+  ],
+  "typeaheadControls": [
+    { "name": "accountTypes", "ref": "#curAccountType", "url": "/data/account-types.json"},
+    { "name": "commsPreference", "ref": "#curCommsPreference", "url": "/data/comms-preference.json"},
+    { "name": "contactStages", "ref": "#curStage", "values": [
+        {  "idx": -1, "id": "New enquiry", "name": "New enquiry"  },
+        {  "idx": 1, "id": "Qualify needs", "name": "Qualify needs"  },
+        {  "idx": 3, "id": "Propose", "name": "Propose"  },
+        {  "idx": 4, "id": "Close", "name": "Close"  },
+        {  "idx": 5, "id": "Implement", "name": "Implement"  },
+        {  "idx": -1, "id": "Review", "name": "Review"  },
+        {  "idx": -1, "id": "Cold", "name": "Cold"  }
+      ]
+    },{ "name": "countries", "ref": "#curCountry", "url": "/data/countries.json"},
+    { "name": "enquiryTypes", "ref": "#curEnquiryType", "values": [
+        {  "id": "Puffin", "name": "Puffin Digital"  },
+        {  "id": "Omny", "name": "Omny Link"  },
+        {  "id": "OneDecision", "name": "One Decision"  }
+      ]
+    },
+    { "name": "owners", "ref": "#curOwner", "values": [
+        {  "id": "tim@knowprocess.com", "name": "tim@knowprocess.com"  }
+      ]
+    },{ "ref": "#who", "values": [
+        {  "id": "tim@knowprocess.com", "name": "tim@knowprocess.com"  }
+      ]
+    },{ "ref": "#notify", "values": [
+        {  "id": "tim@knowprocess.com", "name": "tim@knowprocess.com"  }
+      ]
+    },
+    { "name": "media", "ref": "#curMedium", "url": "/data/media.json"},
+    { "name": "sectors", "ref": "#curSector", "url": "/data/omny/sectors.json"},
+    { "name": "sources", "ref": "#curSource", "url": "/data/sources.json"},
+    { "name": "status", "ref": "#curStatus", "url": "/data/status.json"},
+    { "name": "tenants", "ref": "#curTenant", "url": "/data/tenants.json"}
+  ],
+  "workActions": [
+    { "name": "Add task", "ref": "SimpleToDo", "url": true }
+  ]
+}
