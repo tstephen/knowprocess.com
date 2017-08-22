@@ -9,7 +9,7 @@
  * dark blue: #004684
  * pale blue: #a6cae1
  * dark grey: #414141
- * mid blue:  #1b67bb
+ * mid blue:  #4D86B4
  * pale grey: #acacac
  * pale green: #e3ce02
  * gold: #e3ce02
@@ -20,14 +20,14 @@ body,
 .navbar-sticky,
 .navbar-top {
 	background-color: #414141;
-  color: #1b67bb;
+  color: #4D86B4;
 }
 h1 { 
   color: #004684;
 }
 section h2 {
 	border-bottom: solid 1px #e3ce02;
-	color: #1b67bb;
+	color: #4D86B4;
 }
 section h3 {
   border-bottom: solid 1px #a6cae1;
