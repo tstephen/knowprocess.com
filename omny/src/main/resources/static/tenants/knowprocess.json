@@ -32,7 +32,9 @@
     { "url": "definitions.html", "icon": "omny-icon-process-model", "description": "View your process definitions here", "name": "Process Definitions" },    
     { "url": "admin/users.html", "icon": "omny-icon-user", "name": "User Management", "description": "Manage users", "role": "super_admin" },
     { "url": "status.html", "icon": "glyphicon-thumbs-up", "name": "Status", "description": "Check various aspects of the tenant's configuration", "role": "admin" },
-    { "url": "admin/dash.html", "icon": "glyphicon-king", "name": "Admin", "description": "Admin Dashboard", "role": "super_admin" }
+    { "url": "stacked-bar.html", "icon": "glyphicon-dashboard", "name": "Cohort Performance", "description": "Compare groups of contacts", "role": "super_admin" },
+    { "url": "admin/dash.html", "icon": "glyphicon-king", "name": "Admin", "description": "Admin Dashboard", "role": "super_admin" },
+    { "url": "api.html", "icon": "glyphicon-wrench", "name": "API Documentation", "role": "admin" }
   ],
   "partials": [
     { "name": "knowprocessContactExtension", "url": "/partials/contact-extension.html"},
