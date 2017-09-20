@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Open Doors</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/opendoors.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <div>
+<img class="img-rounded" src="https://knowprocess.com/wp-content/themes/knowprocess-2016/images/profile-tim-200x200.jpg" style="height:200px;vertical-align:middle;">
+          <span>Tim Stephenson</span></div>
+          <blockquote>‘Discuss the application and implications of Agile development and DevOps within a traditional project management environment’</blockquote>
+        </section>
+        <section>
+          <section>
+            <h1>Traditional Project Management</h1>
+            <aside class="notes">
+              <ul>
+                <li>Requirements</li>
+                <li>Specification</li>
+                <li>Implementation</li>
+                <li>Verification</li>
+                <li>Support</li>
+              </ul>
+            </aside>
+          </section>
+          <section>
+            <h2>Agile</h2>
+            <p><a href="http://agilemanifesto.org/">The Agile Manifesto, 2001</a></p>
+            <p><em>Emergent</em> rather than <em>Directed</em>?</p>
+            <aside class="notes">
+              <ul>
+                <li>Individuals and interactions over processes and tools</li>
+                <li>Working software over comprehensive documentation</li>
+                <li>Customer collaboration over contract negotiation</li>
+                <li>Responding to change over following a plan</li>
+              </ul>
+            </aside>
+          </section>
+          <section>
+            <h2>DevOps</h2>
+            <p>A natural conclusion of many agile practices</p>
+            <p>Breaking down organisational barriers</p>
+            <aside class="notes">
+              <p>"It's all just code"</p>
+              <p>circa 2009/10 though before that we talked about ALM and even Agile ALM</p>
+            </aside>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h1>Release Planning</h1>
+            <p>What will the system look like in 6 months?</p>
+            <p>And what confidence can you have on it?</p>
+            <aside class="notes">
+              <p>Most familiar part of the process from traditional project management perspective, c.f Project Brief in Prince</p>
+              <p>Iteration 0, chartering the project, project initiation</p>
+              <p>Relates well to strategy at it's finest granuality</p>
+            </aside>
+          </section>
+          <section>
+            <h2>Implications</h2>
+            <ul>
+              <li>From a customer perspective, less demanding but also potentially less satisfying</li>
+              <li>Identifying uncertainty, not solving it</li>
+            </ul>
+            <aside class="notes">
+              <p>Less up-front with course-corrections</p>
+            </aside>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h1>Team Management</h1>
+            <ul>
+              <li>Prioritised backlog</li>
+              <li>Estimates for closest items (&gt; 1 iteration)</li>
+              <li>Iteration / sprint planning</li>
+              <li>Burn-down</li>
+              <li>Feedback loop</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Potential pitfalls</h2>
+            <ul>
+              <li>How long is an iteration?</li>
+              <li>How do we support production?</li>
+              <li>Who's involved?</li>
+              <li>Inter-sprint gap?</li>
+              <li>Sustainability</li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h1>Technical</h1>
+            <ul>
+              <li>A broader definition of lifecycle</li>
+              <li>Formalise environments and transition between environments</li>
+              <li>Acceptance</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Changes and challenges</h2>
+            <ul>
+              <li>Progressively building value and confidence</li>
+              <li>Specialists or generalists?</li>
+            </ul>
+          </section>
+          <section>
+            <figure>
+              <img src="images/testing-topography.png" alt="Various types of testing and what they relate to">
+              <figcaption>Various types of testing and what they relate to</figcaption>
+            </figure>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
+</html>
