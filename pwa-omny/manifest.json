@@ -1,0 +1,25 @@
+{
+  "short_name": "OmnyLink",
+  "name": "Omny Link - CRM, Workflow and Decisions",
+  "display": "standalone",
+  "background_color": "#fff",
+  "icons": [
+    {
+      "src": "/images/icon/omny-icon-48x48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "/images/icon/omny-icon-96x96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "/images/icon/omny-icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "index.html?launcher=true"
+}
+
