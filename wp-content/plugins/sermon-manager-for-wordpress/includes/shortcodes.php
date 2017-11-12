@@ -96,12 +96,21 @@ class WPFC_Shortcodes {
 			return '<strong>Error: Invalid "list" parameter.</strong><br> Possible values are: "series", "preachers", "topics" and "books".<br> You entered: "<em>' . $args['display'] . '</em>"';
 		}
 
+		$query_args = array(
+			'taxonomy' => $args['display'],
+			'orderby'  => $args['orderby'],
+			'order'    => $args['order'],
+		);
+
+		if ( $query_args['orderby'] === 'date' ) {
+			$query_args['orderby']      = 'meta_value_num';
+			$query_args['meta_key']     = 'sermon_date';
+			$query_args['meta_compare'] = '<=';
+			$query_args['meta_value_num']   = time();
+		}
 
 		// get items
-		$terms = get_terms( $args['display'], array(
-			'orderby' => $args['orderby'],
-			'order'   => $args['order'],
-		) );
+		$terms = get_terms( $query_args );
 
 		if ( count( $terms ) > 0 ) {
 			// sort books by order
@@ -293,7 +302,7 @@ class WPFC_Shortcodes {
 		$args = shortcode_atts( $args, $atts, 'sermon_images' );
 
 		// convert to bool
-		$args['show_description'] = boolval( $args['show_description'] );
+		$args['show_description'] = (bool) $args['show_description'];
 
 		// check if we are using a SM taxonomy, and if we are, convert to valid taxonomy name
 		if ( $this->convertTaxonomyName( $args['display'], true ) ) {
@@ -416,11 +425,11 @@ class WPFC_Shortcodes {
 		$image = wp_get_attachment_image( $series_image_id, $args['size'], false, array( 'class' => $image_class ) );
 
 		$title = $description = '';
-		if ( boolval( $args['show_title'] ) === true ) {
+		if ( (bool) $args['show_title'] === true ) {
 			$title = $latest_series->name;
 			$title = '<' . $args['title_wrapper'] . ' class="' . $title_class . '">' . $title . '</' . $args['title_wrapper'] . '>';
 		}
-		if ( boolval( $args['show_desc'] ) === true ) {
+		if ( (bool) $args['show_desc'] === true ) {
 			$description = '<div class="latest-series-description">' . wpautop( $latest_series->description ) . '</div>';
 		}
 
@@ -602,9 +611,14 @@ class WPFC_Shortcodes {
 	 * @type string $atts ['before'] Date to retrieve posts before. Accepts strtotime()-compatible string
 	 *
 	 *
-	 * @return string|void
+	 * @return string
 	 */
 	function displaySermons( $atts = array() ) {
+		// enqueue scripts and styles
+		if ( ! defined( 'SM_ENQUEUE_SCRIPTS_STYLES' ) ) {
+			define( 'SM_ENQUEUE_SCRIPTS_STYLES', true );
+		}
+
 		// default options
 		$args = array(
 			'per_page'        => '10',
@@ -658,9 +672,6 @@ class WPFC_Shortcodes {
 			'post_type'      => 'wpfc_sermon',
 			'posts_per_page' => $args['per_page'],
 			'order'          => $args['order'],
-			'meta_key'       => 'sermon_date',
-			'meta_value_num' => time(),
-			'meta_compare'   => '<=',
 			'paged'          => $my_page,
 			'year'           => $args['year'],
 			'month'          => $args['month'],
@@ -668,6 +679,19 @@ class WPFC_Shortcodes {
 			'day'            => $args['day'],
 			'after'          => $args['after'],
 			'before'         => $args['before'],
+			'meta_query'     => array(
+				'relation' => 'OR',
+				array( //check to see if date has been filled out
+					'key'     => 'sermon_date',
+					'compare' => '<=',
+					'value'   => time()
+				),
+				array( //if no date has been added show these posts too
+					'key'     => 'sermon_date',
+					'value'   => time(),
+					'compare' => 'NOT EXISTS'
+				)
+			),
 		);
 
 		// check if it's a valid ordering argument
@@ -683,12 +707,7 @@ class WPFC_Shortcodes {
 			$args['orderby'] = 'date';
 		}
 
-		// set the ordering options
-		if ( $args['orderby'] === 'date' ) {
-			$query_args['orderby'] = 'meta_value_num';
-		} else {
-			$query_args['orderby'] = $args['orderby'];
-		}
+		$query_args['orderby'] = $args['orderby'];
 
 		// if we should show just specific sermons
 		if ( $args['sermons'] ) {
@@ -769,6 +788,11 @@ class WPFC_Shortcodes {
 
 		$listing = new WP_Query( $query_args );
 
+		// set image size
+		add_filter( 'wpfc_sermon_excerpt_sermon_image_size', function () use ( $args ) {
+			return $args['image_size'];
+		} );
+
 		if ( $listing->have_posts() ) {
 			ob_start(); ?>
             <div id="wpfc_sermon">
@@ -778,7 +802,7 @@ class WPFC_Shortcodes {
                         <div class="wpfc_sermon_wrap">
                             <h3 class="sermon-title">
                                 <a href="<?php the_permalink(); ?>"
-                                   title="<?php printf( esc_attr__( 'Permalink to %s', 'sermon-manager' ), the_title_attribute( 'echo=0' ) ); ?>"
+                                   title="<?php printf( esc_attr__( 'Permalink to %s', 'sermon-manager-for-wordpress' ), the_title_attribute( 'echo=0' ) ); ?>"
                                    rel="bookmark"><?php the_title(); ?></a></h3>
 							<?php do_action( 'sermon_excerpt' ); ?>
                         </div>

@@ -73,7 +73,7 @@ function wpfc_podcast_render() {
 	if ( $overridden_template = locate_template( 'wpfc-podcast-feed.php' ) ) {
 		load_template( $overridden_template );
 	} else {
-		load_template( SERMON_MANAGER_PATH . 'views/wpfc-podcast-feed.php' );
+		load_template( SM_PATH . 'views/wpfc-podcast-feed.php' );
 	}
 }
 
@@ -195,7 +195,7 @@ function wpfc_podcast_summary( $content ) {
  * @return string Modified date
  */
 function wpfc_podcast_item_date( $time, $d = 'U', $gmt = false ) {
-	return sm_get_the_date( 'D, d M Y H:i:s O' );
+	return sm_get_the_date( $d );
 }
 
 /**

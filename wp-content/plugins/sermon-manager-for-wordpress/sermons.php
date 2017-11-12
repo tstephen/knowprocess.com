@@ -3,19 +3,38 @@
  * Plugin Name: Sermon Manager for WordPress
  * Plugin URI: https://www.wpforchurch.com/products/sermon-manager-for-wordpress/
  * Description: Add audio and video sermons, manage speakers, series, and more.
- * Version: 2.6.2
+ * Version: 2.8.6
  * Author: WP for Church
  * Author URI: https://www.wpforchurch.com/
  * Requires at least: 4.5
  * Tested up to: 4.8.2
  *
- * Text Domain: sermon-manager
+ * Text Domain: sermon-manager-for-wordpress
  * Domain Path: /languages/
  */
 
 defined( 'ABSPATH' ) or die;
 
-// All files must be PHP 5.6 compatible
+// All files must be PHP 5.3 compatible
+
+// Check the PHP version
+if ( version_compare( PHP_VERSION, '5.3.0', '<' ) ) {
+	if ( is_admin() && ! get_option( 'dismissed-render_php_version_warning', 0 ) ) {
+		add_action( 'admin_notices', 'sm_render_php_version_error' );
+	}
+
+	function sm_render_php_version_error() {
+		?>
+        <div class="notice notice-wpfc-php notice-error">
+            <p>
+				<?php echo sprintf( __( "You are running <strong>PHP %s</strong>, but Sermon Manager requires at least <strong>PHP %s</strong>.", 'sermon-manager-for-wordpress' ), PHP_VERSION, '5.3.0' ); ?>
+            </p>
+        </div>
+		<?php
+	}
+
+	return;
+}
 
 class SermonManager {
 
@@ -30,22 +49,33 @@ class SermonManager {
 	 */
 	public function __construct() {
 		// Define constants (PATH and URL are with a trailing slash)
-		define( 'SERMON_MANAGER_PATH', plugin_dir_path( __FILE__ ) );
-		define( 'SERMON_MANAGER_URL', plugin_dir_url( __FILE__ ) );
-		define( 'SERMON_MANAGER_VERSION', preg_match( '/^.*Version: (.*)$/m', file_get_contents( __FILE__ ), $version ) ? trim( $version[1] ) : 'N/A' );
+		define( 'SM_PLUGIN_FILE', __FILE__ );
+		define( 'SM_BASENAME', plugin_basename( __FILE__ ) );
+		define( 'SM_PATH', plugin_dir_path( __FILE__ ) );
+		define( 'SM_URL', plugin_dir_url( __FILE__ ) );
+		define( 'SM_VERSION', preg_match( '/^.*Version: (.*)$/m', file_get_contents( __FILE__ ), $version ) ? trim( $version[1] ) : 'N/A' );
 
-		// Check the PHP version
+		// Register error handlers before continuing
+		/*include_once 'includes/class-sm-error-recovery.php';
+		$error_recovery = new SM_Error_Recovery();
+		$error_recovery->init();*/
+
+		// Break if fatal error detected
+		if ( defined( 'sm_break' ) && sm_break === true ) {
+			return;
+		}
+
 		if ( version_compare( PHP_VERSION, '5.6.0', '<' ) ) {
 			if ( is_admin() && ! get_option( 'dismissed-render_php_version_warning', 0 ) ) {
 				add_action( 'admin_notices', array( $this, 'render_php_version_warning' ) );
 				add_action( 'admin_enqueue_scripts', function () {
-					wp_enqueue_script( 'wpfc-php-notice-handler', SERMON_MANAGER_URL . 'js/dismiss-php.js', array(), SERMON_MANAGER_VERSION );
+					wp_enqueue_script( 'wpfc-php-notice-handler', SM_URL . 'assets/js/admin/dismiss-php.js', array(), SM_VERSION );
 				} );
 			}
 		}
 
 		// Include required items
-		$this->includes();
+		$this->_includes();
 
 		// Add defaults on activation
 		register_activation_hook( __FILE__, array( $this, 'set_default_options' ) );
@@ -67,9 +97,14 @@ class SermonManager {
 		add_action( 'wp_ajax_wpfc_php_notice_handler', array( $this, 'php_notice_handler' ) );
 		// Attach to fix WP dates
 		SM_Dates_WP::hook();
+		// Render sermon HTML for search compatibility
+		add_action( 'wp_insert_post', array( $this, 'render_sermon_into_content' ), 10, 2 );
 
-		// new dates fix for 2.6
-		$this->restore_dates();
+		if ( is_admin() ) {
+			add_action( 'admin_enqueue_scripts', function () {
+				wp_enqueue_style( 'sm-icon', SM_URL . 'assets/css/admin-icon.css', array(), SM_VERSION );
+			} );
+		}
 	}
 
 	/**
@@ -77,107 +112,52 @@ class SermonManager {
 	 *
 	 * @return void
 	 */
-	private function includes() {
+	private function _includes() {
 		/**
 		 * Files to include on frontend and backend
 		 */
 		$includes = array(
-			'/includes/class-sm-dates.php', // Dates operations
-			'/includes/class-sm-dates-wp.php', // Attach to WP filters
-			'/includes/sm-deprecated-functions.php', // Deprecated SM functions
-			'/includes/sm-core-functions.php', // Deprecated SM functions
-			'/includes/legacy-php.php', // Old PHP compatibility fixes
-			'/includes/types-taxonomies.php', // Post Types and Taxonomies
-			'/includes/taxonomy-images/taxonomy-images.php', // Images for Custom Taxonomies
-			'/includes/entry-views.php', // Entry Views Tracking
-			'/includes/shortcodes.php', // Shortcodes
-			'/includes/widgets.php', // Widgets
-			'/includes/template-tags.php', // Template Tags
-			'/includes/podcast-functions.php', // Podcast Functions
-			'/includes/helper-functions.php', // Global Helper Functions
+			'includes/class-sm-dates.php', // Dates operations
+			'includes/class-sm-dates-wp.php', // Attach to WP filters
+			'includes/class-sm-api.php', // API
+			'includes/class-sm-post-types.php', // Register post type, taxonomies, etc
+			'includes/class-sm-install.php', // Install and update functions
+			'includes/sm-deprecated-functions.php', // Deprecated SM functions
+			'includes/sm-core-functions.php', // Deprecated SM functions
+			'includes/sm-cmb-functions.php', // CMB2 Meta Fields functions
+			'includes/taxonomy-images/taxonomy-images.php', // Images for Custom Taxonomies
+			'includes/entry-views.php', // Entry Views Tracking
+			'includes/shortcodes.php', // Shortcodes
+			'includes/widgets.php', // Widgets
+			'includes/template-tags.php', // Template Tags
+			'includes/podcast-functions.php', // Podcast Functions
+			'includes/helper-functions.php', // Global Helper Functions
 		);
 
 		/**
 		 * Admin only includes
 		 */
 		$admin_includes = array(
-			'/includes/admin-functions.php', // General Admin area functions
-			'/includes/CMB2/init.php', // Metaboxes
-			'/includes/options.php', // Options Page
+			'includes/admin-functions.php', // General Admin area functions
+			'includes/CMB2/init.php', // Metaboxes
+			'includes/options.php', // Options Page
 		);
 
 		// Load files
 		foreach ( $includes as $file ) {
-			if ( file_exists( SERMON_MANAGER_PATH . $file ) ) {
-				require_once SERMON_MANAGER_PATH . $file;
+			if ( file_exists( SM_PATH . $file ) ) {
+				require_once SM_PATH . $file;
 			}
 		}
 
 		// Load admin files
 		if ( is_admin() ) {
 			foreach ( $admin_includes as $file ) {
-				if ( file_exists( SERMON_MANAGER_PATH . $file ) ) {
-					require_once SERMON_MANAGER_PATH . $file;
+				if ( file_exists( SM_PATH . $file ) ) {
+					require_once SM_PATH . $file;
 				}
 			}
 		}
-	}
-
-	/**
-	 * Renames all "sermon_date_old" fields to "sermon_date", or converts published date to Unix time and
-	 * saves as "sermon_date".
-	 *
-	 * @since 2.6
-	 */
-	private function restore_dates() {
-		// If not admin, bail
-		if ( ! is_admin() ) {
-			return;
-		}
-
-		// Allow forcing restoration, just append "?sm_restore_dates" to URL
-		if ( ! isset( $_GET['sm_restore_dates'] ) ) {
-			// If we have not even done conversion in previous versions, bail
-			if ( get_option( 'wpfc_sm_dates_convert_done', 0 ) == 0 ) {
-				return;
-			}
-
-			// If we have already done restoration, bail
-			if ( get_option( 'wpfc_sm_dates_restore_done', 0 ) == 1 ) {
-				return;
-			}
-		}
-
-
-		try {
-			global $wpdb;
-
-			// WP sermon dates
-			$wp_dates = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_date FROM $wpdb->posts WHERE post_type = %s", 'wpfc_sermon' ) );
-
-			foreach ( $wp_dates as $post ) {
-				if ( get_post_meta( $post->ID, 'sermon_date', true ) === '' ||
-				     ! is_numeric( get_post_meta( $post->ID, 'sermon_date', true ) ) ) {
-					// Remove all if for some reason we have multiple
-					delete_post_meta( $post->ID, 'sermon_date' );
-
-					if ( $date = get_post_meta( $post->ID, 'sermon_date_old', true ) ) {
-						update_post_meta( $post->ID, 'sermon_date', is_numeric( $date ) ?: strtotime( $date ) );
-					} else {
-						update_post_meta( $post->ID, 'sermon_date', strtotime( $post->post_date ) );
-					}
-				} else {
-					continue;
-				}
-			}
-
-			// clear all cached data
-			wp_cache_flush();
-		} catch ( Exception $e ) {
-			print_r( $e );
-		}
-
-		update_option( 'wpfc_sm_dates_restore_done', 1 );
 	}
 
 	/**
@@ -188,7 +168,7 @@ class SermonManager {
 	 * @return void
 	 */
 	public static function fix_sermons_ordering( $query ) {
-		if ( ! is_admin() && $query->is_main_query() ) {
+		if ( ! is_admin() && ( $query->is_main_query() ) ) {
 			if ( is_post_type_archive( 'wpfc_sermon' ) ||
 			     is_tax( 'wpfc_preacher' ) ||
 			     is_tax( 'wpfc_sermon_topics' ) ||
@@ -196,10 +176,9 @@ class SermonManager {
 			     is_tax( 'wpfc_bible_book' )
 			) {
 				$query->set( 'meta_key', 'sermon_date' );
-				$query->set( 'meta_value', time() );
+				$query->set( 'meta_value_num', time() );
 				$query->set( 'meta_compare', '<=' );
 				$query->set( 'orderby', 'meta_value_num' );
-				$query->set( 'order', 'DESC' );
 			}
 		}
 	}
@@ -223,7 +202,7 @@ class SermonManager {
 	 * @return void
 	 */
 	public static function load_translations() {
-		load_plugin_textdomain( 'sermon-manager', false, SERMON_MANAGER_PATH . 'languages' );
+		load_plugin_textdomain( 'sermon-manager-for-wordpress', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
 	}
 
 	/**
@@ -244,19 +223,19 @@ class SermonManager {
 		}
 
 		if ( ! \SermonManager::getOption( 'css' ) ) {
-			wp_enqueue_style( 'wpfc-sm-styles', SERMON_MANAGER_URL . 'css/sermon.css', array(), SERMON_MANAGER_VERSION );
+			wp_enqueue_style( 'wpfc-sm-styles', SM_URL . 'assets/css/sermon.css', array(), SM_VERSION );
 			wp_enqueue_style( 'dashicons' );
 
 			if ( ! \SermonManager::getOption( 'use_old_player' ) ) {
-				wp_enqueue_script( 'wpfc-sm-plyr', SERMON_MANAGER_URL . 'js/plyr.js', array(), SERMON_MANAGER_VERSION );
-				wp_enqueue_style( 'wpfc-sm-plyr-css', SERMON_MANAGER_URL . 'css/plyr.css', array(), SERMON_MANAGER_VERSION );
+				wp_enqueue_script( 'wpfc-sm-plyr', SM_URL . 'assets/js/plyr.js', array(), SM_VERSION );
+				wp_enqueue_style( 'wpfc-sm-plyr-css', SM_URL . 'assets/css/plyr.css', array(), SM_VERSION );
 				wp_add_inline_script( 'wpfc-sm-plyr', 'window.onload=function(){plyr.setup(document.querySelectorAll(\'.wpfc-sermon-player, #wpfc_sermon audio\'));}' );
 			}
 		}
 
 		if ( ! \SermonManager::getOption( 'bibly' ) ) {
-			wp_enqueue_script( 'wpfc-sm-bibly-script', SERMON_MANAGER_URL . 'js/bibly.min.js', array(), SERMON_MANAGER_VERSION );
-			wp_enqueue_style( 'wpfc-sm-bibly-style', SERMON_MANAGER_URL . 'css/bibly.min.css', array(), SERMON_MANAGER_VERSION );
+			wp_enqueue_script( 'wpfc-sm-bibly-script', SM_URL . 'assets/js/bibly.min.js', array(), SM_VERSION );
+			wp_enqueue_style( 'wpfc-sm-bibly-style', SM_URL . 'assets/css/bibly.min.css', array(), SM_VERSION );
 
 			// get options for JS
 			$bible_version = \SermonManager::getOption( 'bibly_version' );
@@ -365,6 +344,12 @@ class SermonManager {
 				'taxonomies' => array( 'wpfc_sermon_series', 'wpfc_preacher', 'wpfc_sermon_topics' )
 			) );
 		}
+
+		// Enable error recovery on plugin re-activation
+		update_option( '_sm_recovery_do_not_catch', 0 );
+
+		// Flush rewrite cache
+		flush_rewrite_rules( true );
 	}
 
 	/**
@@ -378,6 +363,29 @@ class SermonManager {
             </p>
         </div>
 		<?php
+	}
+
+	/**
+	 * Saves whole Sermon HTML markup into post content for better search compatibility
+	 *
+	 * @param int     $post_ID
+	 * @param WP_Post $post Post object
+	 *
+	 * @since 2.8
+	 */
+	public function render_sermon_into_content( $post_ID, $post ) {
+		if ( $post->post_type !== 'wpfc_sermon' ) {
+			return;
+		}
+
+		if ( defined( 'SM_SAVING_POST' ) ) {
+			return;
+		} else {
+			define( 'SM_SAVING_POST', 1 );
+		}
+
+		global $wpdb;
+		$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET post_content = '%s' WHERE ID = $post_ID", wpfc_sermon_single( true ) ) );
 	}
 
 	/**
