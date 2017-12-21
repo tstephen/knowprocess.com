@@ -3,8 +3,8 @@ Contributors: Huge-IT
 Donate link: https://huge-it.com/wordpress-gallery/
 Tags: gallery, image gallery, lightbox gallery, wordpress gallery, photo gallery,
 Requires at least: 3.0.1
-Tested up to: 4.8.1
-Stable tag: 2.2.5
+Tested up to: 4.9.1
+Stable tag: 2.2.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -887,6 +887,10 @@ The commercial version users can do unlimited customization, if your images/vide
 
 
 == Changelog ==
+
+= 2.2.6 =
+* 1) fix Ratings buttons unclicable bug.
+* 2) fix elastic grid view more button style.
 
 = 2.2.5 =
 * We've added a fix which will remove unnecessary cron jobs from website database.
