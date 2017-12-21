@@ -2,9 +2,9 @@
   "id": "knowprocess", 
   "name": "Know Process",
   "theme": {
-    "logoUrl": "http://knowprocess.com/omny/src/main/resources/static/images/knowprocess-logo.png",
-    "iconUrl": "http://knowprocess.com/omny/src/main/resources/static/images/knowprocess-icon-16x16.png",
-    "cssUrl": "http://knowprocess.com/omny/src/main/resources/static/css/knowprocess.css"
+    "logoUrl": "https://knowprocess.com/omny/src/main/resources/static/images/knowprocess-logo.png",
+    "iconUrl": "https://knowprocess.com/omny/src/main/resources/static/images/knowprocess-icon-16x16.png",
+    "cssUrl": "https://knowprocess.com/omny/src/main/resources/static/css/knowprocess.css"
   },
   "show": { 
     "account":true, "activityAnalysis":true, "activityTracker":true, 
@@ -37,11 +37,11 @@
     { "url": "api.html", "icon": "glyphicon-wrench", "name": "API Documentation", "role": "admin" }
   ],
   "partials": [
-    { "name": "knowprocessContactExtension", "url": "/partials/contact-extension.html"},
-    { "name": "knowprocessAccountExtension", "url": "/partials/account-extension.html"},
-    { "name": "knowprocessSimpleToDo", "url": "/partials/simple-todo.html"},
-    { "name": "knowprocessSendMemo", "url": "/partials/pick-memo.html"},
-    { "name": "knowprocessWorkflowWizard", "url": "/partials/workflow-wizard.html"}
+    { "name": "knowprocessContactExtension", "url": "https://api.knowprocess.com/partials/contact-extension.html"},
+    { "name": "knowprocessAccountExtension", "url": "https://api.knowprocess.com/partials/account-extension.html"},
+    { "name": "knowprocessSimpleToDo", "url": "https://api.knowprocess.com/partials/simple-todo.html"},
+    { "name": "knowprocessSendMemo", "url": "https://api.knowprocess.com/partials/pick-memo.html"},
+    { "name": "knowprocessWorkflowWizard", "url": "https://api.knowprocess.com/partials/workflow-wizard.html"}
   ],
   "processes": [
     { "name": "Add activity to contact", "ref": "AddActivityToContact", "url": "processes/link/omny/custmgmt/AddActivityToContact.bpmn" },
@@ -53,7 +53,6 @@
     { "name": "Merge memo", "ref": "MergeMemoTemplate", "url": "processes/link/omny/memos/MergeMemoTemplate.bpmn" },
     { "name": "Raise ticket", "ref": "RaiseTicket", "url": "processes/link/omny/support/RaiseTicket.bpmn" },
     { "name": "Record an enquiry", "ref": "RecordEnquiry", "url": "processes/link/omny/website/RecordEnquiry.bpmn" },
-    { "name": "Reset user's password", "ref": "ResetPassword", "url": "processes/link/omny/support/ResetPassword.bpmn" },
     { "name": "Select enquiry response", "ref": "SelectEnquiryResponse", "url": "processes/link/omny/mail/SelectDefaultEnquiryResponse.bpmn" },
     { "name": "Send memo", "ref": "SendMemo", "url": "processes/link/omny/memos/SendMemo.bpmn" },
     { "name": "Send alert", "ref": "SendAlert", "url": "processes/link/omny/alerts/SendAlertMemo.bpmn" },
@@ -68,13 +67,11 @@
     "initialResponseThreshold":7
   },
   "templates": [
-    { "name": "ResetPassword", "ref": "ResetPassword" },
     { "name": "ThankYouForEnquiry", "ref": "ThankYouForEnquiry" },
     { "name": "WelcomeNewUser", "ref": "WelcomeNewUser" }
   ],
   "typeaheadControls": [
     { "name": "accountTypes", "ref": "#curAccountType", "url": "/data/account-types.json"},
-    { "name": "commsPreference", "ref": "#curCommsPreference", "url": "/data/comms-preference.json"},
     { "name": "contactStages", "ref": "#curStage", "values": [
         {  "idx": -1, "id": "New enquiry", "name": "New enquiry"  },
         {  "idx": 1, "id": "Qualify needs", "name": "Qualify needs"  },
@@ -84,11 +81,11 @@
         {  "idx": -1, "id": "Review", "name": "Review"  },
         {  "idx": -1, "id": "Cold", "name": "Cold"  }
       ]
-    },{ "name": "countries", "ref": "#curCountry", "url": "/data/countries.json"},
+    },{ "name": "countries", "ref": "#curCountry", "url": "https://api.knowprocess.com/data/countries.json"},
     { "name": "enquiryTypes", "ref": "#curEnquiryType", "values": [
-        {  "id": "Puffin", "name": "Puffin Digital"  },
-        {  "id": "Omny", "name": "Omny Link"  },
-        {  "id": "OneDecision", "name": "One Decision"  }
+        {  "id": "srp", "name": "Sustainable Resource Planning"  },
+        {  "id": "crm", "name": "Automated CRM"  },
+        {  "id": "decisions", "name": "Decision Management"  }
       ]
     },
     { "name": "owners", "ref": "#curOwner", "values": [
@@ -101,11 +98,10 @@
         {  "id": "tim@knowprocess.com", "name": "tim@knowprocess.com"  }
       ]
     },
-    { "name": "media", "ref": "#curMedium", "url": "/data/media.json"},
-    { "name": "sectors", "ref": "#curSector", "url": "/data/omny/sectors.json"},
-    { "name": "sources", "ref": "#curSource", "url": "/data/sources.json"},
-    { "name": "status", "ref": "#curStatus", "url": "/data/status.json"},
-    { "name": "tenants", "ref": "#curTenant", "url": "/data/tenants.json"}
+    { "name": "media", "ref": "#curMedium", "url": "https://api.knowprocess.com/data/media.json"},
+    { "name": "sectors", "ref": "#curSector", "url": "https://api.knowprocess.com/data/omny/sectors.json"},
+    { "name": "sources", "ref": "#curSource", "url": "https://api.knowprocess.com/data/sources.json"},
+    { "name": "status", "ref": "#curStatus", "url": "https://api.knowprocess.com/data/status.json"}
   ],
   "workActions": [
     { "name": "Add task", "ref": "SimpleToDo", "url": true }

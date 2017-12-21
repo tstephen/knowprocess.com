@@ -19,15 +19,15 @@
 body,
 .navbar-sticky,
 .navbar-top {
-	background-color: #414141;
-  color: #4D86B4;
+  background-color: #414141;
+  color: #a6cae1;
 }
 h1 { 
-  color: #004684;
+  color: #a6cae1;
 }
 section h2 {
-	border-bottom: solid 1px #e3ce02;
-	color: #4D86B4;
+  border-bottom: solid 1px #e3ce02;
+  color: #a6cae1;
 }
 section h3 {
   border-bottom: solid 1px #a6cae1;
@@ -56,7 +56,7 @@ a.glyphicon:visited,
 .glyphicon:visited, 
 h2 a.glyphicon, 
 h2 a.glyphicon:visited {
-  color: #a6cae1;
+  color: #4D86B4;
 }
 section h2 a.glyphicon:hover,
 section h2 a.glyphicon:focus,
