@@ -16,7 +16,13 @@
 		$('[data-toggle="dropdown"]').click(function(ev) { 
 			$('#'+$(ev.target).data('target')).slideToggle();
 		});
-
+    // section control
+		$('section .kp-collapse').click(function(ev) {
+			var sect = $(ev.target).closest('section');
+			console.info('toggle section: '+$(sect).attr('id'));
+    	$('#'+$(sect).attr('id')+'>div').toggle();
+    	$(ev.target).toggleClass('dashicons-arrow-right-alt2').toggleClass('dashicons-arrow-down-alt2');
+		});
 	});
 
 }(jQuery));

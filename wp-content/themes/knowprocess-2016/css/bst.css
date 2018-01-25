@@ -176,6 +176,9 @@ Main content
 #content section {
   margin-bottom: 20px
 }
+#content section.kp-collapse h3 {
+  display:inline-flex;
+}
 #content footer {
   padding-bottom: 20px
 }
