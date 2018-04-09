@@ -2,7 +2,7 @@ a {
   color: #9ebfb9;
 }
 .btn.focus, .btn:focus, .btn:hover {
-  color: rgba(255,255,255,0.6);
+  color: #242d36;
   text-decoration: none;
 }
 
