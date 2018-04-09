@@ -7,34 +7,49 @@ a {
 }
 
 .knowprocess-inverse-tile {
-  color: #242d36; /* primary blue */;
+  color: #242d36;
   background-color: #9ebfb9 /* secondary blue */;
 }
+.knowprocess-inverse-tile a {
+  color: #242d36;
+}
 
-.knowprocess-tile,
-.onedecision-tile {
+.knowprocess-tile {
   color: #9ebfb9 /* secondary blue */;
   background-color: #242d36; /* primary blue */;
 }
-
-.knowprocess-tile h2,
-.onedecision-tile h2 {
+.knowprocess-tile h2 {
   color: white;
   font-size: 24px;
   text-transform: uppercase;
 } 
-.knowprocess-tile h2.has-img,
-.onedecision-tile h2.has-img {
+.onedecision-tile {
+  color: #9ebfb9 /* secondary blue */;
+  background-color: #647276;
+}
+.onedecision-tile img {
+  margin-top: -0.5rem;
+}
+.tile h2 {
+  text-transform: uppercase;
+}
+.tile h2.has-img {
   height:70px;
   background-color:white;
   padding-top:10px;
   padding-bottom:10px;
   border-radius:5px;
 }
-.knowprocess-tile h3,
-.onedecision-tile h3 {
-  font-size: 21px;
-} 
+.tile h2.has-img img {
+  margin-left: 10px;
+}
+.tile .tile-bottom {
+  position: absolute;
+  bottom: 1rem;
+}
+.tile h3 {
+  font-size: 1.8rem;
+}
 
 .empty-tile {
   color: black;
@@ -51,14 +66,10 @@ a {
   padding:10px 30px 10px 30px;
   border-radius:5px;
 } 
-.omny-tile h3 {
-  font-size: 22px;
-}
 .omny-tile img { 
   height: 50px;
   position: relative;
   top: -5px;
-  left: 20%;
 }
 .omny-emphasis {
   color: #ff6c06;
@@ -88,6 +99,21 @@ a {
 .syncapt-emphasis {
   color: #beeb5b;
   font-style: normal;
+}
+.srp-tile {
+  color: #9ebfb9;
+  background-color: #97150c;
+}
+.srp-tile em {
+  color:#dcab2c;
+}
+.srp-tile h2 {
+  color: #0a4165;
+  font-size: 1.9rem;
+  padding-left:10px;
+}
+.srp-tile h3 {
+  font-size: 20px;
 }
 .trakeo-tile {
   color: #0060ad;
