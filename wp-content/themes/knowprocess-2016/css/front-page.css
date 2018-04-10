@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Signika');
 a {
   color: #9ebfb9;
 }
@@ -15,8 +16,16 @@ a {
 }
 
 .knowprocess-tile {
-  color: #9ebfb9 /* secondary blue */;
-  background-color: #242d36; /* primary blue */;
+  color: #9ebfb9;
+  background-color: #242d36;
+}
+.knowprocess-tile a:active,
+.knowprocess-tile a:focus,
+.knowprocess-tile a:hover,
+.knowprocess-inverse-tile a:active,
+.knowprocess-inverse-tile a:focus,
+.knowprocess-inverse-tile a:hover {
+  color: #da72ae;
 }
 .knowprocess-tile h2 {
   color: white;
@@ -31,6 +40,7 @@ a {
   margin-top: -0.5rem;
 }
 .tile h2 {
+  font-family: 'Signika', sans-serif;
   text-transform: uppercase;
 }
 .tile h2.has-img {

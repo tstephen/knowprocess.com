@@ -97,11 +97,11 @@
             <div class="knowprocess-inverse-tile tile col-xs-6 col-sm-4 col-md-4 col-lg-3">
               <h2>Get to Know Process</h2>
               <p>
-                <ul style="list-style:none">
-                  <li><a href="mailto:tim@knowprocess.com" class="glyphicon glyphicon-envelope btn">tim@knowprocess.com</a></li>
-                  <li><a href="http://www.twitter.com/knowprocess" class="kp-icon-twitter kp-glyph btn">@tstephen10</a></li>
-                  <li><a href="/blog" class="kp-icon-rss kp-glyph btn">Blog</a></li>
-                <li><a href="http://www.linkedin.com/company/2819688?trk=tyah" class="kp-icon-linkedin kp-glyph btn"></a></li>
+                <ul style="line-height: 3rem; list-style:none">
+                  <li><a href="mailto:tim@knowprocess.com"><span class="glyphicon glyphicon-envelope"> tim@knowprocess.com</span></a></li>
+                  <li><a href="//www.twitter.com/knowprocess"><span class="kp-icon-twitter kp-glyph"> @tstephen10</span></a></li>
+                  <li><a href="/blog"><span class="kp-icon-rss kp-glyph"></span> Blog</a></li>
+                  <li><a href="//www.linkedin.com/company/2819688?trk=tyah"><span class="kp-icon-linkedin kp-glyph"></span></a></li>
                 </ul>   
               </p>
             </div><!--/span-->
