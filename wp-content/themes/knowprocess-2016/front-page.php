@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Know Process - we do!</title>
+    <?php get_template_part('includes/google-site-tag'); ?>
+    <title><?php wp_title('•', true, 'right'); bloginfo('name'); ?></title>
     <link rel="icon" type="image/png" href="https://api.knowprocess.com/images/icon/knowprocess-icon-16x16.png">
     <link rel="shortcut icon" type="image/png" href="https://api.knowprocess.com/images/icon/knowprocess-icon-16x16.png">
     <link rel="stylesheet" href="<?php echo get_template_directory_uri () ?>/css/icons/style.css">
@@ -19,6 +20,7 @@
     <![endif]-->
   </head>
   <body>
+    <?php get_template_part('includes/google-tag-manager'); ?>
 
     <div class="container">
 
