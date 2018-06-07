@@ -51,7 +51,7 @@
               <h3>We <span class="omny-emphasis">automate</span> your <br>
 <span class="omny-emphasis">digital</span> channels<br/>
               </h3>
-              <p class="tile-bottom"><a class="btn btn-default" href="http://omny.link" role="button">Learn more &raquo;</a></p>
+              <p class="tile-bottom"><a class="btn btn-default" href="https://github.com/omny-link/" role="button">Learn more &raquo;</a></p>
             </div><!--/span-->
             <div class="col-sm-2 col-md-2 col-lg-3">
               <h2></h2>
