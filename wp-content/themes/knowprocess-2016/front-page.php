@@ -8,7 +8,7 @@
     <title><?php wp_title('•', true, 'right'); bloginfo('name'); ?></title>
     <link rel="icon" type="image/png" href="https://api.knowprocess.com/images/icon/knowprocess-icon-16x16.png">
     <link rel="shortcut icon" type="image/png" href="https://api.knowprocess.com/images/icon/knowprocess-icon-16x16.png">
-    <link rel="stylesheet" href="<?php echo get_template_directory_uri () ?>/css/icons/style.css">
+    <link rel="stylesheet" href="https://api.knowprocess.com/webjars/knowprocess-icons/3.0.0/style.css">
     <link href="<?php echo get_template_directory_uri () ?>/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo get_template_directory_uri () ?>/css/front-page.css" rel="stylesheet">
 
@@ -31,8 +31,8 @@
               <p> </p>
             </div><!--/span-->
             <div class="srp-tile tile col-xs-6 col-sm-4 col-md-4 col-lg-3">
-              <h2 class="has-img">Sustainable Resource Planning</h2>
-              <h3>Move from mere <em>sustainable policy</em> to firm <em>sustainable practice</em></h3>
+              <h2 class="has-img"><img src="<?php echo get_template_directory_uri () ?>/images/srp-logo.png" style="height:100%;"/></h2>
+              <h3><em>S</em>ustainability <em>R</em>eporting <em>P</em>latform &mdash; for all your reporting needs</h3>
               <p class="tile-bottom"><a class="btn btn-default" href="//srp.digital/" role="button">Learn more &raquo;</a></p>
             </div><!--/span-->
             <div class="tile hidden-xs col-sm-2 col-md-2 col-lg-3">
@@ -100,10 +100,11 @@
               <h2>Get to Know Process</h2>
               <p>
                 <ul style="line-height: 3rem; list-style:none">
-                  <li><a href="mailto:tim@knowprocess.com"><span class="glyphicon glyphicon-envelope"> tim@knowprocess.com</span></a></li>
-                  <li><a href="//www.twitter.com/knowprocess"><span class="kp-icon-twitter kp-glyph"> @tstephen10</span></a></li>
+                  <li><a href="/contact-us/"><span class="kp-icon-envelope kp-glyph"></span> Get in touch</a></li>
                   <li><a href="/blog"><span class="kp-icon-rss kp-glyph"></span> Blog</a></li>
-                  <li><a href="//www.linkedin.com/company/2819688?trk=tyah"><span class="kp-icon-linkedin kp-glyph"></span></a></li>
+                  <li><a href="//twitter.com/tstephen10"><span class="kp-icon-twitter kp-glyph"></span> @tstephen10</a></li>
+                  <!--li><a href="//www.linkedin.com/company/2819688?trk=tyah"><span class="kp-icon-linkedin kp-glyph"></span></a></li-->
+                  <li><a href="/privacy-notice/"><span class="kp-icon-lock kp-glyph"></span> Privacy Notice</a></li>
                 </ul>   
               </p>
             </div><!--/span-->
