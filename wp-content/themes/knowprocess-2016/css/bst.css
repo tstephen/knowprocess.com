@@ -7,10 +7,15 @@
  * Site-wide settings
  */
 a {
-  color: #9ebfb9;
+  color: #da72ae;
+  border-bottom: 1px solid #9ebfb9;
+  transition: all 0.3s ease-in;
 }
 a:focus, a:hover {
   color: #da72ae;
+  text-decoration: none;
+  text-shadow: 1px 0px 1px #da72ae;
+  transition: width 0.3s;
 }
 body {
   background-color: #f0f1f3;
