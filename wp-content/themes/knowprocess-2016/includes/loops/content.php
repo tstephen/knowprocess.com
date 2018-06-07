@@ -23,7 +23,7 @@ Alternatively, notice that index.php, category.php and single.php have a post_cl
             </h4>
         </header>
         <section>
-            <?php the_post_thumbnail(); ?>
+            <?php the_post_thumbnail( 'full', array( 'class' => 'img-responsive' ) ); ?>
             <?php the_content( __( '&hellip; ' . __('Continue reading', 'bst' ) . ' <i class="glyphicon glyphicon-arrow-right"></i>', 'bst' ) ); ?>
         </section>
         <footer>
