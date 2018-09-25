@@ -123,12 +123,20 @@ class Elm_DashboardWidget {
 			$this->userCanChangeSettings()
 			&& wsh_elm_fs()->is_not_paying()
 			&& $this->settings->get('enable_premium_notice', true)
+			&& wsh_elm_fs()->is_pricing_page_visible()
+			&& (!wsh_elm_fs()->is_activation_mode())
 		) {
 			echo '<div class="elm-upgrade-to-pro-footer">';
 
 			echo __('Upgrade to Pro for more detailed logs and a summary view.', 'error-log-monitor'), '<br>';
 
 			echo '<div class="elm-upgrade-notice-links">';
+			printf(
+				'<a href="%s" target="_blank" rel="noopener" title="Opens in a new tab">%s</a>',
+				esc_attr('https://errorlogmonitor.com/'),
+				_x('Details', 'a link to Pro version information', 'error-log-monitor')
+			);
+			echo ' | ';
 			printf(
 				'<a href="%s">%s</a>',
 				esc_attr(wsh_elm_fs()->get_upgrade_url()),
@@ -484,7 +492,10 @@ class Elm_DashboardWidget {
 				$isMundane[$index] = 1;
 			} else if ( $this->endsWithAny(
 				$fileName,
-				array('/wp-load.php', '/wp-config.php', '/wp-settings.php', '/wp-admin/admin.php', '/wp-admin/menu.php',)
+				array(
+					'/wp-load.php', '/wp-config.php', '/wp-settings.php', '/wp-admin/admin.php', '/wp-admin/menu.php',
+					'/wp-includes/template-loader.php', '/wp-blog-header.php', '/wp-includes/template.php',
+				)
 			) ) {
 				//Hide core files that are included on almost every page load.
 				$isMundane[$index] = 1;
@@ -884,17 +895,19 @@ class Elm_DashboardWidget {
 			echo '</table>';
 		}
 
-		echo '<div id="elm-pro-version-settings-section">';
-		printf(
-			'<h3 class="elm-config-section-heading"><strong>%s</strong></h3>',
-			_x(
-				'Pro Version',
-				'the heading of the upgrade-to-pro section in widget settings',
-				'error-log-monitor'
-			)
-		);
-		$this->displayProSection();
-		echo '</div>';
+		if ( !wsh_elm_fs()->is_activation_mode() ) {
+			echo '<div id="elm-pro-version-settings-section">';
+			printf(
+				'<h3 class="elm-config-section-heading"><strong>%s</strong></h3>',
+				_x(
+					'Pro Version',
+					'the heading of the upgrade-to-pro section in widget settings',
+					'error-log-monitor'
+				)
+			);
+			$this->displayProSection();
+			echo '</div>';
+		}
 	}
 
 	/**
@@ -1016,6 +1029,19 @@ class Elm_DashboardWidget {
 	}
 
 	public function displayProSection() {
+		if ( !current_user_can('manage_options') ) {
+			return;
+		}
+
+		$accountLink = null;
+		if ( wsh_elm_fs()->is_registered() ) {
+			$accountLink = sprintf(
+				'<a href="%s">%s</a>',
+				esc_attr(wsh_elm_fs()->get_account_url()),
+				_x('Account', 'Freemius account link', 'error-log-monitor')
+			);
+		}
+
 		//Pro version call-to-action.
 		if ( wsh_elm_fs()->is_not_paying() ) {
 			echo 'Upgrade to Pro to get these additional features: ';
@@ -1027,20 +1053,26 @@ class Elm_DashboardWidget {
 
 			echo '<p>';
 			printf(
-				'<a href="%s">%s</a>',
-				esc_attr(wsh_elm_fs()->get_upgrade_url()),
-				__('Upgrade to Pro', 'error-log-monitor')
+				'<a href="%s" target="_blank" rel="noopener" title="Opens in a new tab">%s</a>',
+				esc_attr('https://errorlogmonitor.com/'),
+				_x('Details', 'a link to Pro version information', 'error-log-monitor')
 			);
+			echo ' | ';
 
-			if ( wsh_elm_fs()->is_registered() ) {
-				echo ' | ';
+			if ( wsh_elm_fs()->is_pricing_page_visible() ) {
 				printf(
 					'<a href="%s">%s</a>',
-					esc_attr(wsh_elm_fs()->get_account_url()),
-					_x('Account', 'Freemius account link', 'error-log-monitor')
+					esc_attr(wsh_elm_fs()->get_upgrade_url()),
+					__('Upgrade to Pro', 'error-log-monitor')
 				);
 			}
+
+			if ( !empty($accountLink) ) {
+				echo ' | ' . $accountLink;
+			}
 			echo '</p>';
+		} else if ( !empty($accountLink) ) {
+			echo '<p>' . $accountLink . '</p>';
 		}
 	}
 
