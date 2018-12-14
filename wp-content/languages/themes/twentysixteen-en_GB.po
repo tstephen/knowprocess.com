@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Themes - Twenty Sixteen package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-01-29 00:58:00+0000\n"
+"PO-Revision-Date: 2018-12-13 09:14:21+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,6 +18,50 @@ msgstr "Twenty Sixteen"
 #. Description of the theme
 msgid "Twenty Sixteen is a modernized take on an ever-popular WordPress layout — the horizontal masthead with an optional right sidebar that works perfectly for blogs and websites. It has custom color options with beautiful default color schemes, a harmonious fluid grid using a mobile-first approach, and impeccable polish in every detail. Twenty Sixteen will make your WordPress look beautiful everywhere."
 msgstr "Twenty Sixteen is a modernised take on an ever-popular WordPress layout — the horizontal masthead with an optional right sidebar that works perfectly for blogs and websites. It has custom colour options with beautiful default colour schemes, a harmonious fluid grid using a mobile-first approach, and impeccable polish in every detail. Twenty Sixteen will make your WordPress look beautiful everywhere."
+
+#: functions.php:189
+msgid "Bright Red"
+msgstr "Bright Red"
+
+#: functions.php:184
+msgid "Dark Red"
+msgstr "Dark Red"
+
+#: functions.php:179
+msgid "Medium Brown"
+msgstr "Medium Brown"
+
+#: functions.php:174
+msgid "Dark Brown"
+msgstr "Dark Brown"
+
+#: functions.php:169
+msgid "Light Blue"
+msgstr "Light Blue"
+
+#: functions.php:164
+msgid "Bright Blue"
+msgstr "Bright Blue"
+
+#: functions.php:159
+msgid "Blue Gray"
+msgstr "Blue Grey"
+
+#: functions.php:154
+msgid "White"
+msgstr "White"
+
+#: functions.php:149
+msgid "Light Gray"
+msgstr "Light Grey"
+
+#: functions.php:144
+msgid "Medium Gray"
+msgstr "Medium Grey"
+
+#: functions.php:139
+msgid "Dark Gray"
+msgstr "Dark Grey"
 
 #. translators: %s: Name of current post
 #: template-parts/content.php:28 inc/template-tags.php:184
@@ -58,11 +102,11 @@ msgstr "Search for:"
 
 #: footer.php:28
 msgid "Footer Social Links Menu"
-msgstr "Footer Social Links Menu"
+msgstr "Footer social links menu"
 
 #: footer.php:17
 msgid "Footer Primary Menu"
-msgstr "Footer Primary Menu"
+msgstr "Footer primary menu"
 
 #: functions.php:231
 msgid "Add widgets here to appear in your sidebar."
@@ -86,7 +130,7 @@ msgstr "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>.
 
 #: template-parts/content-none.php:13
 msgid "Nothing Found"
-msgstr "Nothing Found"
+msgstr "404 Nothing Found"
 
 #: template-parts/biography.php:33
 msgid "View all posts by %s"
@@ -114,7 +158,7 @@ msgstr "Next"
 
 #: search.php:18
 msgid "Search Results for: %s"
-msgstr "Search Results for: %s"
+msgstr "Search results for: %s"
 
 #: inc/template-tags.php:106
 msgctxt "Used before tag names."
@@ -164,7 +208,7 @@ msgstr "Dark"
 
 #: inc/customizer.php:172
 msgid "Main Text Color"
-msgstr "Main Text Colour"
+msgstr "Main text colour"
 
 #: inc/customizer.php:253
 msgid "Default"
@@ -172,15 +216,15 @@ msgstr "Default"
 
 #: inc/customizer.php:184
 msgid "Secondary Text Color"
-msgstr "Secondary Text Colour"
+msgstr "Secondary text colour"
 
 #: inc/customizer.php:160
 msgid "Link Color"
-msgstr "Link Colour"
+msgstr "Link colour"
 
 #: inc/customizer.php:145
 msgid "Page Background Color"
-msgstr "Page Background Colour"
+msgstr "Page background colour"
 
 #: single.php:29 image.php:102
 msgctxt "Parent post link"
@@ -193,7 +237,7 @@ msgstr "Twenty Sixteen requires at least WordPress version 4.4. You are running 
 
 #: inc/customizer.php:130
 msgid "Base Color Scheme"
-msgstr "Base Color Scheme"
+msgstr "Base Colour Scheme"
 
 #: image.php:73
 msgctxt "Used before full size attachment link."
@@ -207,11 +251,11 @@ msgstr "Pages:"
 
 #: image.php:25
 msgid "Next Image"
-msgstr "Next Image"
+msgstr "Next image"
 
 #: image.php:24
 msgid "Previous Image"
-msgstr "Previous Image"
+msgstr "Previous image"
 
 #: header.php:47
 msgid "Menu"
@@ -239,7 +283,7 @@ msgstr "on"
 
 #: functions.php:239
 msgid "Content Bottom 1"
-msgstr "Content Bottom 1"
+msgstr "Content bottom 1"
 
 #: functions.php:241 functions.php:251
 msgid "Appears at the bottom of the content on posts and pages."
@@ -247,7 +291,7 @@ msgstr "Appears at the bottom of the content on posts and pages."
 
 #: functions.php:249
 msgid "Content Bottom 2"
-msgstr "Content Bottom 2"
+msgstr "Content bottom 2"
 
 #. translators: If there are characters in your language that are not supported
 #. by Merriweather, translate this to 'off'. Do not translate into your own
@@ -271,11 +315,11 @@ msgstr "Sidebar"
 
 #: functions.php:89 header.php:62
 msgid "Social Links Menu"
-msgstr "Social Links Menu"
+msgstr "Social links menu"
 
 #: functions.php:88 header.php:51
 msgid "Primary Menu"
-msgstr "Primary Menu"
+msgstr "Primary menu"
 
 #: footer.php:57
 msgid "Proudly powered by %s"
@@ -321,9 +365,9 @@ msgstr "https://wordpress.org/themes/twentysixteen/"
 
 #. Author of the theme
 msgid "the WordPress team"
-msgstr "the WordPress team"
+msgstr "The WordPress Team"
 
 #. Author URI of the theme
 #: footer.php:56
 msgid "https://wordpress.org/"
-msgstr "https://wordpress.org/"
+msgstr "https://en-gb.wordpress.org/"
