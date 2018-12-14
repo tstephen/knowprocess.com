@@ -2,8 +2,8 @@
 Contributors: levertechadmin, danlester
 Tags: drive, google, document, google apps, g suite, google drive, sso, auth, intranet, embed
 Requires at least: 4.0
-Tested up to: 4.9
-Stable tag: 4.2
+Tested up to: 5.0
+Stable tag: 5.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -259,6 +259,10 @@ or upload the ZIP file directly in the Plugins section of your Wordpress admin
 1. Follow the instructions to configure the Google Apps Login plugin post-installation
 
 == Changelog ==
+
+= 5.0 =
+
+Added compatibility for Wordpress 5.0
 
 = 4.2 =
 

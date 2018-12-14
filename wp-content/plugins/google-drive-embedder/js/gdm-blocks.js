@@ -5,10 +5,7 @@
 var __                = wp.i18n.__;
 var createElement     = wp.element.createElement;
 var registerBlockType = wp.blocks.registerBlockType;
-var InspectorControls = wp.editor.InspectorControls;
-var Button = wp.components.Button;
-var RichText = wp.editor.RichText;
-var Editable = wp.blocks.Editable;
+
 
 /**
  * Register block
@@ -35,7 +32,12 @@ registerBlockType(
 		// Defines the block within the editor.
 		edit: function( props ) {
 			var content = props.attributes.content;
-							
+
+			var InspectorControls = wp.editor.InspectorControls;
+			var Button = wp.components.Button;
+			var RichText = wp.editor.RichText;
+			var Editable = wp.blocks.Editable;
+			
 			function updateMessage(newContent){
 				props.setAttributes({ content: newContent });
 			}
@@ -62,7 +64,8 @@ registerBlockType(
 			
 			var get_class = new Date();
 			var class_name = get_class.getTime();
-			
+
+
 			function newButtonFunction(){
 				var class_name_full = 'p.' + class_name;
 				newContent = jQuery(class_name_full).text();

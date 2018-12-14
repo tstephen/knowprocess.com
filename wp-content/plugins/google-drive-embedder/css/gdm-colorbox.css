@@ -25,7 +25,7 @@
 #gdmCboxContent{margin-top:30px;background:#000;}
 .gdmCboxIframe{background:#fff;}
 #gdmCboxError{padding:50px; border:1px solid #ccc;}
-#gdmCboxLoadedContent{border:5px solid #000; background:#fff;}
+#gdmCboxLoadedContent{border:5px solid #000; background:#fff;overflow: hidden!important;}
 #gdmCboxTitle{position:absolute; top:-30px; left:0; color:#ccc; background-color: black;}
 #gdmCboxCurrent{position:absolute; top:-20px; right:0px; color:#ccc;}
 #gdmCboxLoadingGraphic{background:url(../images/colorbox/loading.gif) no-repeat center center;}
