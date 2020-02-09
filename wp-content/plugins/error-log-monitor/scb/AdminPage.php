@@ -570,6 +570,16 @@ abstract class scbAdminPage {
 	 * @return array
 	 */
 	public function _action_link( $links ) {
+		//WSH: Normally, $links should be an array. Some plugins incorrectly set it to an empty string
+		//instead. It's possible that other plugins could use null/false or something else.
+		if ( !is_array($links) ) {
+			if ( empty($links) ) {
+				$links = array(); //It should be safe to convert empty values to an empty array.
+			} else {
+				return $links; //Unsupported data type.
+			}
+		}
+
 		$url = add_query_arg( 'page', $this->args['page_slug'], admin_url( $this->args['parent'] ) );
 
 		$links[] = html_link( $url, $this->args['action_link'] );
