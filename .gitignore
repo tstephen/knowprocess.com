@@ -12,6 +12,7 @@
 .maintenance
 
 **/.*
+maven
 omny/target
 
 wp-config.php
