@@ -105,6 +105,7 @@
                   <li><a href="//twitter.com/tstephen10"><span class="kp-icon-twitter kp-glyph"></span> @tstephen10</a></li>
                   <!--li><a href="//www.linkedin.com/company/2819688?trk=tyah"><span class="kp-icon-linkedin kp-glyph"></span></a></li-->
                   <li><a href="/privacy-notice/"><span class="kp-icon-lock kp-glyph"></span> Privacy Notice</a></li>
+                  <li style="font-size: 1rem;line-height: 1rem;">Registered in the UK<br/>Company No: 11727212, VAT No: 332298991</li>
                 </ul>   
               </p>
             </div><!--/span-->
