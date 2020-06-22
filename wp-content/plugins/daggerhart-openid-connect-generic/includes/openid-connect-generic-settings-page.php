@@ -27,10 +27,10 @@ class OpenID_Connect_Generic_Settings_Page {
 		$this->settings             = $settings;
 		$this->logger               = $logger;
 		$this->settings_field_group = $this->settings->get_option_name() . '-group';
-		
+
 		/*
 		 * Simple settings fields simply have:
-		 * 
+		 *
 		 * - title
 		 * - description
 		 * - type ( checkbox | text | select )
@@ -167,6 +167,12 @@ class OpenID_Connect_Generic_Settings_Page {
 				'type'        => 'checkbox',
 				'section'     => 'user_settings',
 			),
+			'create_if_does_not_exist'   => array(
+				'title'       => __( 'Create user if does not exist' ),
+				'description' => __( 'If the user identity is not link to an existing Wordpress user, it is created. If this setting is not enabled and if the user authenticates with an account which is not link to an existing Wordpress user then the authentication failed' ),
+				'type'        => 'checkbox',
+				'section'     => 'user_settings',
+			),
 			'redirect_user_back'   => array(
 				'title'       => __( 'Redirect Back to Origin Page' ),
 				'description' => __( 'After a successful OpenID Connect authentication, this will redirect the user back to the page on which they clicked the OpenID Connect login button. This will cause the login process to proceed in a traditional WordPress fashion. For example, users logging in through the default wp-login.php page would end up on the WordPress Dashboard and users logging in through the WooCommerce "My Account" page would end up on their account page.' ),
@@ -219,7 +225,7 @@ class OpenID_Connect_Generic_Settings_Page {
 
 		// register our settings
 		add_action( 'admin_init', array( $settings_page, 'admin_init' ) );
-		
+
 		return $settings_page;
 	}
 
@@ -256,7 +262,7 @@ class OpenID_Connect_Generic_Settings_Page {
 			array( $this, 'user_settings_description' ),
 			$this->options_page_name
 		);
-		
+
 		add_settings_section( 'authorization_settings',
 			__( 'Authorization Settings' ),
 			array( $this, 'authorization_settings_description' ),
@@ -316,7 +322,7 @@ class OpenID_Connect_Generic_Settings_Page {
 		foreach ( $this->settings_fields as $key => $field ) {
 			if ( isset( $input[ $key ] ) ) {
 				$options[ $key ] = sanitize_text_field( trim( $input[ $key ] ) );
-			} 
+			}
 			else {
 				$options[ $key ] = '';
 			}
@@ -343,7 +349,7 @@ class OpenID_Connect_Generic_Settings_Page {
 				settings_fields( $this->settings_field_group );
 				do_settings_sections( $this->options_page_name );
 				submit_button();
-				
+
 				// simple debug to view settings array
 				if ( isset( $_GET['debug'] ) ) {
 					var_dump( $this->settings->get_values() );
@@ -360,6 +366,10 @@ class OpenID_Connect_Generic_Settings_Page {
 			<p class="description">
 				<strong><?php _e( 'Login Button Shortcode' ); ?></strong>
 				<code>[openid_connect_generic_login_button]</code>
+			</p>
+			<p class="description">
+				<strong><?php _e( 'Authentication URL Shortcode' ); ?></strong>
+				<code>[openid_connect_generic_auth_url]</code>
 			</p>
 
 			<?php if ( $this->settings->enable_logging ) { ?>
@@ -442,11 +452,11 @@ class OpenID_Connect_Generic_Settings_Page {
 	public function client_settings_description() {
 		_e( 'Enter your OpenID Connect identity provider settings' );
 	}
-	
+
 	public function user_settings_description() {
 		_e( 'Modify the interaction between OpenID Connect and WordPress users' );
 	}
-	
+
 	public function authorization_settings_description() {
 		_e( 'Control the authorization mechanics of the site' );
 	}
