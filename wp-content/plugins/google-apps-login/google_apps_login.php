@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name: Google Apps Login
- * Plugin URI: http://wp-glogin.com/
+ * Plugin URI: https://wp-glogin.com/
  * Description: Simple secure login for Wordpress through users' Google Apps accounts (uses secure OAuth2, and MFA if enabled)
- * Version: 3.4.1
+ * Version: 3.4.2
  * Author: Lever Technology LLC
- * Author URI: http://wp-glogin.com/
+ * Author URI: https://wp-glogin.com/
  * License: GPL3
  * Network: true
  * Text Domain: google-apps-login
@@ -23,7 +23,7 @@ else {
 
 class basic_google_apps_login extends core_google_apps_login {
 	
-	protected $PLUGIN_VERSION = '3.4.1';
+	protected $PLUGIN_VERSION = '3.4.2';
 	
 	// Singleton
 	private static $instance = null;
@@ -56,43 +56,43 @@ class basic_google_apps_login extends core_google_apps_login {
 	protected function ga_section_text_end() {
 	?>
 		<p><b><?php _e( 'For full support, and premium features that greatly simplify WordPress user management for admins, please visit:' , 'google-apps-login'); ?>
-		<a href="http://wp-glogin.com/glogin/?utm_source=Admin%20Promo&utm_medium=freemium&utm_campaign=Freemium" target="_blank">http://wp-glogin.com/</a></b>
+		<a href="https://wp-glogin.com/glogin/?utm_source=Admin%20Promo&utm_medium=freemium&utm_campaign=Freemium" target="_blank">https://wp-glogin.com/</a></b>
 		</p>
 	<?php
 	}
 	
 	protected function ga_options_do_sidebar() {
-		$drivelink = "http://wp-glogin.com/drive/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=Drive";
-		$upgradelink = "http://wp-glogin.com/glogin/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=Freemium";
-		$avatarslink = "http://wp-glogin.com/avatars/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=Avatars";
-		$aioilink = "http://wp-glogin.com/intranet/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=AIOI";
+		$drivelink = "https://wp-glogin.com/drive/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=Drive";
+		$upgradelink = "https://wp-glogin.com/glogin/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=Freemium";
+		$avatarslink = "https://wp-glogin.com/avatars/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=Avatars";
+		$aioilink = "https://wp-glogin.com/intranet/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=AIOI";
 		
 		$adverts = Array();
 		
 		$adverts[] = '<div>'
 		.'<a href="'.$upgradelink.'" target="_blank">'
-		.'<img src="'.$this->my_plugin_url().'img/basic_loginupgrade.png" />'
+		.'<img alt="Login upgrade" src="'.$this->my_plugin_url().'img/basic_loginupgrade.png" />'
 		.'</a>'
 		.'<span>Buy our <a href="'.$upgradelink.'" target="_blank">premium Login plugin</a> to revolutionize user management</span>'
 		.'</div>';
 		
 		$adverts[] = '<div>'
 		.'<a href="'.$drivelink.'" target="_blank">'
-		.'<img src="'.$this->my_plugin_url().'img/basic_driveplugin.png" />'
+		.'<img alt="Google Drive Embedder Plugin" src="'.$this->my_plugin_url().'img/basic_driveplugin.png" />'
 		.'</a>'
 		.'<span>Try our <a href="'.$drivelink.'" target="_blank">Google Drive Embedder</a> plugin</span>'
 		.'</div>';
 
 		$adverts[] = '<div>'
 		.'<a href="'.$avatarslink.'" target="_blank">'
-		.'<img src="'.$this->my_plugin_url().'img/basic_avatars.png" />'
+		.'<img alt="Google Profile Avatars Plugin" src="'.$this->my_plugin_url().'img/basic_avatars.png" />'
 		.'</a>'
 		.'<span>Bring your site to life with <a href="'.$avatarslink.'" target="_blank">Google Profile Avatars</a></span>'
 		.'</div>';
 
 		$adverts[] = '<div>'
 		.'<a href="'.$aioilink.'" target="_blank">'
-		.'<img src="'.$this->my_plugin_url().'img/basic_aioi.png" />'
+		.'<img alt="All-In-One Intranet Plugin" src="'.$this->my_plugin_url().'img/basic_aioi.png" />'
 		.'</a>'
 		.'<span>Instantly turn WordPress into a corporate intranet with <a href="'.$aioilink.'" target="_blank">All-In-One Intranet</a></span>'
 		.'</div>';
@@ -175,7 +175,7 @@ class basic_google_apps_login extends core_google_apps_login {
 		</ul>
 		
 		<p>Find out more about purchase options on our website:
-		<a href="https://wp-glogin.com/glogin/?utm_source=Domain%20Control&utm_medium=freemium&utm_campaign=Freemium" target="_blank">http://wp-glogin.com/</a>
+		<a href="https://wp-glogin.com/glogin/?utm_source=Domain%20Control&utm_medium=freemium&utm_campaign=Freemium" target="_blank">https://wp-glogin.com/</a>
 		</p>
 		
 		<?php
@@ -206,7 +206,7 @@ class basic_google_apps_login extends core_google_apps_login {
 	}
 	
 	public function ga_user_screen_upgrade_message() {
-		$purchase_url = 'http://wp-glogin.com/glogin/?utm_source=User%20Pages&utm_medium=freemium&utm_campaign=Freemium';
+		$purchase_url = 'https://wp-glogin.com/glogin/?utm_source=User%20Pages&utm_medium=freemium&utm_campaign=Freemium';
 		$nothanks_url = add_query_arg( 'google_apps_login_action', 'no_thanks' );
 		echo '<div class="updated"><p>';
 		echo sprintf( __('Completely forget about WordPress user management - upgrade to <a href="%s">Google Apps Login Premium or Enterprise</a> to automatically sync users from your Google Apps domain', 'google-apps-login'),
