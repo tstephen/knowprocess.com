@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css?family=Saira+Condensed');
 @import url('https://fonts.googleapis.com/css?family=Josefin+Sans');*/
 @import url('https://fonts.googleapis.com/css?family=Signika');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 /*
  * Site-wide settings
  */
@@ -20,7 +21,7 @@ a:focus, a:hover {
 body {
   background-color: #f0f1f3;
   color: #656e7f;
-  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 18px;
   font-weight: 300;
   line-height: 27px;
