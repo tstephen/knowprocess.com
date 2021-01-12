@@ -40,7 +40,7 @@
               <p></p>
             </div><!--/span-->
             <div class="knowprocess-tile tile col-xs-6 col-sm-4 col-md-4 col-lg-3">
-              <h2 class="has-img"><img src="https://api.knowprocess.com/images/knowprocess-logo.png" style="height:100%;"/></h2>
+              <h2 class="has-img"><img src="https://knowprocess.com/images/knowprocess-logo.png" style="height:100%;"/></h2>
               <h3>&nbsp;</h3>
               <p style="margin-top: 20px;"><a class="btn btn-default" href="https://cloud.knowprocess.com" role="button">Application Login &raquo;</a></p>
               <p class="tile-bottom"><a class="btn" href="/reset-password">Forgotten your password? &raquo;</a></p>
