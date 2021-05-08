@@ -573,7 +573,9 @@ class Application_Passwords {
 				'nonce'     => wp_create_nonce( 'wp_rest' ),
 				'user_id'   => $user->ID,
 				'text'      => array(
-					'no_credentials' => __( 'Due to a potential server misconfiguration, it seems that HTTP Basic Authorization may not work for the REST API on this site: `Authorization` headers are not being sent to WordPress by the web server. <a href="https://github.com/georgestephanis/application-passwords/wiki/Basic-Authorization-Header----Missing">You can learn more about this problem, and a possible solution, on our GitHub Wiki.</a>' ),
+					'no_credentials'       => __( 'Due to a potential server misconfiguration, it seems that HTTP Basic Authorization may not work for the REST API on this site: `Authorization` headers are not being sent to WordPress by the web server. <a href="https://github.com/georgestephanis/application-passwords/wiki/Basic-Authorization-Header----Missing">You can learn more about this problem, and a possible solution, on our GitHub Wiki.</a>' ),
+					'revoke_password'      => esc_attr__( 'Are you sure you want to revoke this password? This action cannot be undone.' ),
+					'revoke_all_passwords' => esc_attr__( 'Are you sure you want to revoke all passwords? This action cannot be undone.' ),
 				),
 			)
 		);
@@ -623,6 +625,7 @@ class Application_Passwords {
 			<tr data-slug="{{ data.slug }}">
 				<td class="name column-name has-row-actions column-primary" data-colname="<?php esc_attr_e( 'Name' ); ?>">
 					{{ data.name }}
+					<button type="button" class="toggle-row"><span class="screen-reader-text"><?php esc_html_e( 'Show more details' ); ?></span></button>
 				</td>
 				<td class="created column-created" data-colname="<?php esc_attr_e( 'Created' ); ?>">
 					{{ data.created }}
