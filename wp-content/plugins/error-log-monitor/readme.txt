@@ -2,8 +2,8 @@
 Contributors: whiteshadow
 Tags: dashboard widget, administration, error reporting, admin, maintenance, php
 Requires at least: 4.5
-Tested up to: 5.6
-Stable tag: 1.7
+Tested up to: 5.9.2
+Stable tag: 1.7.2
 
 Adds a Dashboard widget that displays the latest messages from your PHP error log. It can also send logged errors to email.
 
@@ -45,6 +45,15 @@ Follow these steps to install the plugin on your site:
 2. Dashboard widget configuration screen.
 
 == Changelog ==
+
+= 1.7.2 =
+* Added an "Ignored regular expressions" setting. Enter one or more regex patterns in the box and the plugin will hide log entries that match any of those patterns.
+
+= 1.7.1 =
+* Added a "Clear Fixed Messages" button.
+* Fixed a scheduling bug where, in certain configurations, the plugin would send some email notifications too late.
+* Fixed a security issue.
+* Tested with WP 5.9.1 and 6.0-alpha (briefly).
 
 = 1.7 =
 * Added a "mark as fixed" option. Like the "ignore" option, "mark as fixed" hides all existing copies of a specific error. However, if the same error happens again in the future, the plugin will make it visible again.

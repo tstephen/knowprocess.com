@@ -1,5 +1,6 @@
 @charset "utf-8";
 
+//region Variables
 $codeFontFamily: Consolas, Monaco, monospace;
 $timestampColor: #72777c;
 
@@ -15,6 +16,9 @@ $tableBorderColor: #ddd;
 $widgetPadding: 12px;
 $widgetTopMargin: 11px;
 
+$configSectionBottomMargin: 1em;
+//endregion
+
 #ws_php_error_log {
 	.elm-log-table {
 		table-layout: fixed;
@@ -26,15 +30,6 @@ $widgetTopMargin: 11px;
 
 	}
 
-	.elm-config-section-heading {
-		font-size: 1.2em;
-		margin-top: 20px;
-
-		&:first-of-type {
-			margin-top: 0;
-		}
-	}
-
 	.elm-line-actions {
 		visibility: hidden;
 	}
@@ -43,19 +38,11 @@ $widgetTopMargin: 11px;
 		visibility: visible;
 	}
 
-	.elm-ignored-messages, .elm-fixed-messages {
-		margin-bottom: 1em;
-	}
-
-	#elm-clear-ignored-messages {
-		margin-bottom: 8px;
-	}
-
 	.dashicons {
 		color: #82878c;
 	}
 
-	//List-based log layout.
+	//region List-based log layout
 	.elm-wide-list {
 		position: relative;
 		margin: -$widgetTopMargin 0 -$widgetPadding 13px;
@@ -128,7 +115,9 @@ $widgetTopMargin: 11px;
 			}
 		}
 	}
+	//endregion
 
+	//region Context
 	.elm-entry-context-container {
 		//border-top: 1px solid $tableBorderColor;
 		//background: #ffffff;
@@ -207,8 +196,9 @@ $widgetTopMargin: 11px;
 			}
 		}
 	}
+	//endregion
 
-	//Enhanced stack trace.
+	//region Enhanced stack trace
 	table.elm-stacktrace {
 		border: none;
 		table-layout: fixed;
@@ -255,8 +245,33 @@ $widgetTopMargin: 11px;
 			padding-left: 0;
 		}
 	}
+	//endregion
 
-	//"Upgrade to Pro" notices.
+	//region Configuration screen
+	.elm-config-section-heading {
+		font-size: 1.2em;
+		margin-top: 20px;
+
+		&:first-of-type {
+			margin-top: 0;
+		}
+	}
+
+	.elm-ignored-messages, .elm-fixed-messages {
+		margin-bottom: $configSectionBottomMargin;
+	}
+
+	#elm-clear-ignored-messages, #elm-clear-fixed-messages {
+		margin-bottom: 8px;
+	}
+
+	#elm_regex_filter_text {
+		width: 100%;
+		margin-bottom: $configSectionBottomMargin;
+	}
+	//endregion
+
+	//region "Upgrade to Pro" notices
 	@mixin widget-footer {
 		margin: 10px (-$widgetPadding) (-$widgetPadding) (-$widgetPadding);
 		padding: 8px $widgetPadding 10px $widgetPadding;
@@ -288,4 +303,5 @@ $widgetTopMargin: 11px;
 			margin-bottom: 0;
 		}
 	}
+	//endgregion
 }

@@ -98,6 +98,9 @@ class Elm_Plugin {
 			'ignored_messages' => array(),
 			'fixed_messages' => array(),
 
+			'regex_filter_text' => '',
+			'regex_filter_patterns' => array(),
+
 			'enable_premium_notice' => true,
 		);
 	}
@@ -126,7 +129,12 @@ class Elm_Plugin {
 		if ( empty($emails) ) {
 			$this->emailCronJob->unschedule();
 		} else {
-			$this->emailCronJob->reschedule(array('interval' => $newSettings->get('email_interval')));
+			$this->emailCronJob->reschedule(array(
+				'interval' => min(
+					$newSettings->get('email_interval'),
+					$newSettings->get('email_log_check_interval')
+				)
+			));
 		}
 
 		if ( !$newSettings->get('enable_log_size_notification') ) {
@@ -337,14 +345,19 @@ class Elm_Plugin {
 			return $logIterator;
 		}
 
-		$ignoreFilter = new Elm_IgnoredMessageFilter(
+		$currentFilter = new Elm_IgnoredMessageFilter(
 			$logIterator,
 			$this->settings->get('ignored_messages'),
 			$this->settings->get('fixed_messages', array()),
 			array($this, 'handleFixedErrorRecurrence')
 		);
 
-		return new Elm_SeverityFilter($ignoreFilter, $includedGroups);
+		$patterns = $this->settings->get('regex_filter_patterns', array());
+		if ( !empty($patterns) && is_array($patterns) ) {
+			$currentFilter = new Elm_RegexFilter($currentFilter, $patterns);
+		}
+
+		return new Elm_SeverityFilter($currentFilter, $includedGroups);
 	}
 
 	public function getIncludedGroupsForDashboard() {
@@ -364,7 +377,7 @@ class Elm_Plugin {
 	}
 
 	/**
-	 * Handle a situation where an error that has ben marked as fixed happens again.
+	 * Handle a situation where an error that has been marked as fixed happens again.
 	 *
 	 * @param string $message Log entry message.
 	 * @noinspection PhpUnused It is in fact used as a callback for Elm_IgnoredMessageFilter.

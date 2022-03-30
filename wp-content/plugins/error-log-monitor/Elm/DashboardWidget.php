@@ -47,6 +47,11 @@ class Elm_DashboardWidget {
 			->requiredCap($this->requiredCapability)
 			->register();
 
+		ajaw_v1_CreateAction('elm-clear-fixed-messages')
+			->handler(array($this, 'ajaxClearAllFixedMessages'))
+			->requiredCap($this->requiredCapability)
+			->register();
+
 		ajaw_v1_CreateAction('elm-hide-pro-notice')
 			->handler(array($this, 'ajaxHideUpgradeNotice'))
 			->requiredCap($this->requiredCapability)
@@ -79,7 +84,7 @@ class Elm_DashboardWidget {
 		return $this->userCanSeeWidget() && current_user_can('install_plugins');
 	}
 
-	private function userCanChangeSettings() {
+	protected function userCanChangeSettings() {
 		return $this->userCanSeeWidget() && current_user_can('install_plugins');
 	}
 
@@ -96,7 +101,7 @@ class Elm_DashboardWidget {
 				'elm-dashboard-widget-styles',
 				plugins_url($this->widgetCssPath, $this->plugin->getPluginFile()),
 				array(),
-				'20201210'
+				'20220313'
 			);
 		}
 	}
@@ -640,13 +645,21 @@ class Elm_DashboardWidget {
 			_e("Sorry, you are not allowed to change these settings.", 'error-log-monitor');
 
 			//Hide the "Submit" button. WordPress doesn't provide any way to remove it completely.
-			echo '<style type="text/css">#ws_php_error_log .submit { display: none; }</style>';
+			echo '<style>#ws_php_error_log .submit { display: none; }</style>';
 
 			return;
 		}
 
 		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && isset($_POST['widget_id']) && is_array($_POST[$this->widgetId]) ) {
 			$formInputs = $_POST[$this->widgetId];
+
+			//Remove magic quotes. There's no hook for wp_magic_quotes, so we use one that's
+			//close in execution order.
+			if ( did_action('sanitize_comment_cookies') && function_exists('wp_magic_quotes') ) {
+				$formInputs = wp_unslash($formInputs);
+			}
+
+			$settingsErrors = array(); /** @var Elm_ConfigurationError[] $settingsErrors */
 
 			$this->settings->set('widget_line_count', intval($formInputs['widget_line_count']));
 			if ( $this->settings->get('widget_line_count') <= 0 ) {
@@ -721,6 +734,18 @@ class Elm_DashboardWidget {
 				}
 			}
 
+			if ( isset($formInputs['regex_filter_text']) ) {
+				$regexFilterText = strval($formInputs['regex_filter_text']);
+			} else {
+				$regexFilterText = '';
+			}
+			$this->settings->set('regex_filter_text', $regexFilterText);
+
+			$regexListParser = new Elm_RegexListParser();
+			$regexData = $regexListParser->parse($regexFilterText);
+			$settingsErrors = array_merge($settingsErrors, $regexData->getErrors());
+			$this->settings->set('regex_filter_patterns', $regexData->getValidPatterns());
+
 			$logLayout = strval($formInputs['dashboard_log_layout']);
 			if ( in_array($logLayout, array('list', 'table')) ) {
 				$this->settings->set('dashboard_log_layout', $logLayout);
@@ -728,6 +753,10 @@ class Elm_DashboardWidget {
 
 			do_action('elm_handle_widget_settings_form', $formInputs);
 			do_action('elm_settings_changed', $this->settings);
+
+			if ( !empty($settingsErrors) )	{
+				$this->handleSettingsErrors($settingsErrors);
+			}
 		}
 
 		printf(
@@ -961,9 +990,24 @@ class Elm_DashboardWidget {
 		printf('<h4>%s</h4>', _x('Marked as fixed', 'table heading', 'error-log-monitor'));
 
 		$fixedMessages = $this->settings->get('fixed_messages', array());
-		if ( empty($fixedMessages) ) {
-			echo '<p>', __('No messages have been marked as fixed.', 'error-log-monitor'), '</p>';
-		} else {
+
+		printf(
+			'<p id="elm-no-fixed-messages-notice" style="%s">%s</p>',
+			!empty($fixedMessages) ? 'display: none;' : '',
+			__('No messages have been marked as fixed.', 'error-log-monitor')
+		);
+
+		if ( !empty($fixedMessages) ) {
+			printf(
+				'<button class="button button-small" id="elm-clear-fixed-messages" data-progress-text="%s">%s</button>',
+				esc_attr(_x(
+					'Processing...',
+					'progress text when clearing fixed messages',
+					'error-log-monitor'
+				)),
+				_x('Clear Fixed Messages', 'button title', 'error-log-monitor')
+			);
+
 			echo '<table class="widefat striped elm-fixed-messages">';
 			foreach($fixedMessages as $message => $details) {
 				printf('<tr data-raw-message="%s">', esc_attr($message));
@@ -976,6 +1020,31 @@ class Elm_DashboardWidget {
 			}
 			echo '</table>';
 		}
+
+		echo '<h4>', __('Ignored regular expressions', 'error-log-monitor'), '</h4>';
+
+		$regexText = $this->settings->get('regex_filter_text', '');
+		$regexLines = preg_split('@\R@', $regexText, 1000);
+		$currentLineCount = is_array($regexLines) ? count($regexLines) : 0;
+
+		/* translators: help text for the "Ignored regular expressions" field in widget configuration */
+		$helpText = __(
+			'One regex pattern per line. Messages that match any of the patterns will be hidden.',
+			'error-log-monitor'
+		);
+
+		//Disable spellcheck and add-ons like Grammarly for this field. They would just
+		//report false spelling/grammar errors that don't apply to regex syntax.
+		printf(
+			'<textarea name="%1$s[regex_filter_text]" spellcheck="false" rows="%4$d" 
+				data-enable-grammarly="false" data-gramm_editor="false"
+				id="elm_regex_filter_text" placeholder="%2$s" title="%2$s">%3$s</textarea>',
+			esc_attr($this->widgetId),
+			esc_attr($helpText),
+			esc_html($regexText),
+			//Adjust box height to match the number of lines of text (within limits).
+			min(max($currentLineCount, 3), 20)
+		);
 
 		if ( !wsh_elm_fs()->is_activation_mode() ) {
 			echo '<div id="elm-pro-version-settings-section">';
@@ -990,6 +1059,52 @@ class Elm_DashboardWidget {
 			$this->displayProSection();
 			echo '</div>';
 		}
+	}
+
+	private function handleSettingsErrors($errors) {
+		if ( empty($errors) ) {
+			return;
+		}
+
+		//WordPress does not provide an officially approved way to display error messages
+		//when saving widget settings, so we'll just stop execution with an error. Note that
+		//valid settings will still be saved when this happens.
+		$messages = array();
+
+		foreach ($errors as $error) {
+			if ( is_string($error) ) {
+				$messages[] = $error;
+			} else {
+				$messages[] = sprintf('<p>%s</p>', $error->getHtml());
+			}
+		}
+
+		//Include a link back to the widget configuration screen.
+		$configUrl = add_query_arg(
+			array(
+				'edit'         => $this->widgetId,
+				//Add a random parameter to force navigation. Without it, the link URL would
+				//be exactly the same as the current URL (including the #fragment), and the
+				//browser would stay on the error page.
+				'_elm-refresh' => rand() . '_' . time(),
+			),
+			self_admin_url('index.php')
+		);
+		$configUrl .= '#' . urlencode($this->widgetId);
+
+		wp_die(
+			implode("\n", $messages),
+			_x(
+				'Configuration Error',
+				'page title after trying to save an invalid widget configuration',
+				'error-log-monitor'
+			),
+			array(
+				'link_url'  => $configUrl,
+				'link_text' => __('&laquo; Back to widget configuration', 'error-log-monitor'),
+			)
+		);
+
 	}
 
 	/**
@@ -1109,6 +1224,21 @@ class Elm_DashboardWidget {
 				'ignored_messages',
 				$message,
 				'elm_ignored_status_changed'
+			);
+		}
+		$this->plugin->flushBlacklistChanges();
+
+		return array('removedItems' => $total);
+	}
+
+	public function ajaxClearAllFixedMessages() {
+		$items = $this->settings->get('fixed_messages');
+		$total = count($items);
+		foreach(array_keys($items) as $message) {
+			$this->plugin->queueBlacklistRemoval(
+				'fixed_messages',
+				$message,
+				'elm_fixed_status_changed'
 			);
 		}
 		$this->plugin->flushBlacklistChanges();

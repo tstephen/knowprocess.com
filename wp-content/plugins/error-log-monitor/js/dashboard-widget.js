@@ -68,20 +68,18 @@ jQuery(function($) {
 		return false;
 	});
 
-	//Handle the "Clear Ignored Messages" button.
-	widget.find('#elm-clear-ignored-messages').on('click', function () {
-		var button = $(this),
-			actionText = button.text();
+	function handleClearMessagesButton(button, tableSelector, noticeSelector, ajaxActionName) {
+		var actionText = button.text();
 
 		button.prop('disabled', true);
 		button.text(button.data('progressText'));
 
 		//Hide the entire table.
-		var table = widget.find('.elm-ignored-messages');
+		var table = widget.find(tableSelector);
 		var totalMessages = table.find('tr').length;
 		table.hide();
 
-		var action = AjawV1.getAction('elm-clear-ignored-messages');
+		var action = AjawV1.getAction(ajaxActionName);
 		if (action) {
 			action.post(
 				{total: totalMessages},
@@ -89,7 +87,7 @@ jQuery(function($) {
 					//Success!
 					table.remove();
 					button.remove();
-					widget.find('#elm-no-ignored-messages-notice').show();
+					widget.find(noticeSelector).show();
 				},
 				function () {
 					//Something went wrong. Restore the table and the button.
@@ -99,7 +97,27 @@ jQuery(function($) {
 				}
 			);
 		}
+	}
 
+	//Handle the "Clear Ignored Messages" button.
+	widget.find('#elm-clear-ignored-messages').on('click', function () {
+		handleClearMessagesButton(
+			$(this),
+			'.elm-ignored-messages',
+			'#elm-no-ignored-messages-notice',
+			'elm-clear-ignored-messages'
+		);
+		return false;
+	});
+
+	//Handle the "Clear Fixed Messages" button.
+	widget.find('#elm-clear-fixed-messages').on('click', function () {
+		handleClearMessagesButton(
+			$(this),
+			'.elm-fixed-messages',
+			'#elm-no-fixed-messages-notice',
+			'elm-clear-fixed-messages'
+		);
 		return false;
 	});
 
