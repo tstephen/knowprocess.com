@@ -26,7 +26,7 @@ abstract class TabBase
      * @since  4.3.2.1
      * @var    string   Help link: Reference
      */
-    const HELP_LINK_REFERENCE = 'https://docs.wp-fail2ban.com';
+    const HELP_LINK_REFERENCE = 'https://docs.wp-fail2ban.com/en/'.WP_FAIL2BAN_VER2;
     /**
      * @since  4.3.2.1
      * @var    string   Help link: Support
@@ -276,7 +276,7 @@ abstract class TabBase
      */
     public function gettext(string $translation, string $text, string $domain): string
     {
-        return str_replace('___WPF2BVER___', WP_FAIL2BAN_VER_SHORT, $translation);
+        return str_replace('___WPF2BVER___', WP_FAIL2BAN_VER2, $translation);
     }
 
     /**
@@ -433,6 +433,7 @@ abstract class TabBase
     /**
      * Link to documentation
      *
+     * @since  5.0.0    Simplify
      * @since  4.4.0    Add type hint, return type
      * @since  4.3.0    Protected
      * @since  4.2.0
@@ -443,13 +444,15 @@ abstract class TabBase
      */
     protected function doc_link(string $define): string
     {
-        static $wp_f2b_ver;
+        $link = <<< HTML
+<a href="%s/defines/constants/%s.html"
+   style="text-decoration: none;"
+   target="_blank"
+   title="%s">%s<span class="dashicons dashicons-external"
+                      style="vertical-align: text-bottom"></span></a>
+HTML;
 
-        if (empty($wp_f2b_ver)) {
-            $wp_f2b_ver = substr(WP_FAIL2BAN_VER, 0, strrpos(WP_FAIL2BAN_VER, '.'));
-        }
-
-        return sprintf('<a href="https://docs.wp-fail2ban.com/en/%s/defines/constants/%s.html" style="text-decoration: none;" target="_blank" title="%s">%s<span class="dashicons dashicons-external" style="vertical-align: text-bottom"></span></a>', $wp_f2b_ver, $define, __('Documentation', 'wp-fail2ban'), $define);
+        return sprintf($link, self::HELP_LINK_REFERENCE, $define, __('Reference', 'wp-fail2ban'), $define);
     }
 
     /**
@@ -465,13 +468,17 @@ abstract class TabBase
      */
     protected function see_also(array $defines, $para = true): string
     {
-        $html = sprintf(
-            '<em>%s</em>&nbsp;&nbsp;%s',
-            __('See also:', 'wp-fail2ban'),
-            implode('&nbsp;/&nbsp;', array_map(function ($i) {
-                return $this->doc_link($i);
-            }, $defines))
-        );
+        $html = sprintf('<em>%s</em>', __('See also:', 'wp-fail2ban'));
+        if (1 == count($defines)) {
+            $html .= '&nbsp;'.$this->doc_link($defines[0]);
+        } else {
+            $html .= sprintf(
+                '<br>&nbsp;&mdash;&nbsp;%s',
+                implode('<br>&nbsp;&mdash;&nbsp;', array_map(function ($i) {
+                    return $this->doc_link($i);
+                }, $defines))
+            );
+        }
         if ($para) {
             $html = '<p>'.$html.'</p>';
         }
@@ -596,6 +603,8 @@ abstract class TabBase
      * @param  string           $cssClass
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function radio($define, bool $show_desc = true, string $plan = 'bronze', bool $echo = true): string
     {
@@ -608,9 +617,10 @@ abstract class TabBase
         $html = '';
         foreach ($wp_fail2ban['config'][$define]['values'] as $value) {
             $checked = $this->def_checked($define, $value, false);
-            $html .= "<p><input type=\"radio\" disabled=\"disabled\" {$checked}>";
             if ($show_desc) {
-                $html .= "<label>".$this->description("{$define}.{$value}", false).'</label>';
+                $html .= "<p><label><input type=\"radio\" disabled=\"disabled\" {$checked}> ".$this->description("{$define}.{$value}", false).'</label>';
+            } else {
+                $html .= "<p><input type=\"radio\" disabled=\"disabled\" {$checked}>";
             }
             $html .= '</p>';
         }
@@ -724,6 +734,28 @@ abstract class TabBase
     protected function description(string $define, bool $echo = true): string
     {
         if (!is_null($desc = Config::desc($define))) {
+            if ($echo) {
+                echo '<p class="description">'.$desc.'</p>';
+            }
+            return $desc;
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * Helper: setting description extended
+     *
+     * @since  5.1.0
+     *
+     * @param  string   $define
+     * @param  bool     $echo
+     *
+     * @return string
+     */
+    protected function description_ex(string $define, bool $echo = true): string
+    {
+        if (!is_null($desc = Config::desc_ex($define))) {
             if ($echo) {
                 echo '<p class="description">'.$desc.'</p>';
             }

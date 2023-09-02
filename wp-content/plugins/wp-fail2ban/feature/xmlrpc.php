@@ -11,6 +11,7 @@ namespace    org\lecklider\charles\wordpress\wp_fail2ban\feature;
 use          org\lecklider\charles\wordpress\wp_fail2ban\Syslog;
 
 use function org\lecklider\charles\wordpress\wp_fail2ban\bail;
+use function org\lecklider\charles\wordpress\wp_fail2ban\core\remote_addr;
 
 defined('ABSPATH') or exit;
 
@@ -53,6 +54,7 @@ function xmlrpc_login_error(\IXR_Error $error, \WP_Error $user): \IXR_Error
  *
  * @see \wp_xmlrpc_server::pingback_error()
  *
+ * @since  5.2.0    Use default facility
  * @since  4.4.0    Add type hints, return type
  * @since  4.3.0    Added action
  * @since  4.0.0    Return $ixr_error
