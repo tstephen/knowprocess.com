@@ -11,7 +11,9 @@ use Automattic\Jetpack\Assets\Logo as Jetpack_Logo;
 use Automattic\Jetpack\Connection\Manager as Connection_Manager;
 use Automattic\Jetpack\Connection\Urls;
 use Automattic\Jetpack\Constants as Constants;
+use Automattic\Jetpack\IdentityCrisis\Exception;
 use Automattic\Jetpack\IdentityCrisis\UI;
+use Automattic\Jetpack\IdentityCrisis\URL_Secret;
 use Automattic\Jetpack\Status as Status;
 use Automattic\Jetpack\Tracking as Tracking;
 use Jetpack_Options;
@@ -28,7 +30,7 @@ class Identity_Crisis {
 	/**
 	 * Package Version
 	 */
-	const PACKAGE_VERSION = '0.7.4';
+	const PACKAGE_VERSION = '0.10.1';
 
 	/**
 	 * Instance of the object.
@@ -65,7 +67,7 @@ class Identity_Crisis {
 	 * @return object
 	 */
 	public static function init() {
-		if ( is_null( self::$instance ) ) {
+		if ( self::$instance === null ) {
 			self::$instance = new Identity_Crisis();
 		}
 
@@ -86,6 +88,8 @@ class Identity_Crisis {
 		add_filter( 'jetpack_connection_disconnect_site_wpcom', array( __CLASS__, 'jetpack_connection_disconnect_site_wpcom_filter' ) );
 
 		add_filter( 'jetpack_remote_request_url', array( $this, 'add_idc_query_args_to_url' ) );
+
+		add_filter( 'jetpack_connection_validate_urls_for_idc_mitigation_response', array( static::class, 'add_secret_to_url_validation_response' ) );
 
 		$urls_in_crisis = self::check_identity_crisis();
 		if ( false === $urls_in_crisis ) {
@@ -144,14 +148,14 @@ class Identity_Crisis {
 		foreach ( (array) $processed_items as $item ) {
 
 			// First, is this item a jetpack_sync_callable action? If so, then proceed.
-			$callable_args = ( is_array( $item ) && isset( $item[0], $item[1] ) && 'jetpack_sync_callable' === $item[0] )
+			$callable_args = ( is_array( $item ) && isset( $item[0] ) && isset( $item[1] ) && 'jetpack_sync_callable' === $item[0] )
 				? $item[1]
 				: null;
 
 			// Second, if $callable_args is set, check if the callable was home_url or site_url. If so,
 			// clear the migrate option.
 			if (
-				isset( $callable_args, $callable_args[0] )
+				isset( $callable_args[0] )
 				&& ( 'home_url' === $callable_args[0] || 'site_url' === $callable_args[1] )
 			) {
 				Jetpack_Options::delete_option( 'migrate_for_idc' );
@@ -168,8 +172,8 @@ class Identity_Crisis {
 	public function wordpress_init() {
 		if ( current_user_can( 'jetpack_disconnect' ) ) {
 			if (
-					isset( $_GET['jetpack_idc_clear_confirmation'], $_GET['_wpnonce'] ) &&
-					wp_verify_nonce( $_GET['_wpnonce'], 'jetpack_idc_clear_confirmation' )
+					isset( $_GET['jetpack_idc_clear_confirmation'] ) && isset( $_GET['_wpnonce'] ) &&
+					wp_verify_nonce( $_GET['_wpnonce'], 'jetpack_idc_clear_confirmation' ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- WordPress core doesn't unslash or verify nonces either.
 			) {
 				Jetpack_Options::delete_option( 'safe_mode_confirmed' );
 				self::$is_safe_mode_confirmed = false;
@@ -193,7 +197,6 @@ class Identity_Crisis {
 		$status = new Status();
 		if ( ! is_string( $url )
 			|| $status->is_offline_mode()
-			|| $status->is_staging_site()
 			|| self::validate_sync_error_idc_option() ) {
 			return $url;
 		}
@@ -380,6 +383,8 @@ class Identity_Crisis {
 				'migrate_for_idc',
 			)
 		);
+
+		delete_transient( 'jetpack_idc_possible_dynamic_site_url_detected' );
 	}
 
 	/**
@@ -1220,5 +1225,94 @@ class Identity_Crisis {
 			'wpcom_url'   => $data['wpcom_home'],
 			'current_url' => $data['home'],
 		);
+	}
+
+	/**
+	 * Try to detect $_SERVER['HTTP_HOST'] being used within WP_SITEURL or WP_HOME definitions inside of wp-config.
+	 *
+	 * If `HTTP_HOST` usage is found, it's possbile (though not certain) that site URLs are dynamic.
+	 *
+	 * When a site URL is dynamic, it can lead to a Jetpack IDC. If potentially dynamic usage is detected,
+	 * helpful support info will be shown on the IDC UI about setting a static site/home URL.
+	 *
+	 * @return bool True if potentially dynamic site urls were detected in wp-config, false otherwise.
+	 */
+	public static function detect_possible_dynamic_site_url() {
+		$transient_key = 'jetpack_idc_possible_dynamic_site_url_detected';
+		$transient_val = get_transient( $transient_key );
+
+		if ( false !== $transient_val ) {
+			return (bool) $transient_val;
+		}
+
+		$path      = self::locate_wp_config();
+		$wp_config = $path ? file_get_contents( $path ) : false; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		if ( $wp_config ) {
+			$matched = preg_match(
+				'/define ?\( ?[\'"](?:WP_SITEURL|WP_HOME).+(?:HTTP_HOST).+\);/',
+				$wp_config
+			);
+
+			if ( $matched ) {
+				set_transient( $transient_key, 1, HOUR_IN_SECONDS );
+				return true;
+			}
+		}
+
+		set_transient( $transient_key, 0, HOUR_IN_SECONDS );
+		return false;
+	}
+
+	/**
+	 * Gets path to WordPress configuration.
+	 * Source: https://github.com/wp-cli/wp-cli/blob/master/php/utils.php
+	 *
+	 * @return string
+	 */
+	public static function locate_wp_config() {
+		static $path;
+
+		if ( null === $path ) {
+			$path = false;
+
+			if ( getenv( 'WP_CONFIG_PATH' ) && file_exists( getenv( 'WP_CONFIG_PATH' ) ) ) {
+				$path = getenv( 'WP_CONFIG_PATH' );
+			} elseif ( file_exists( ABSPATH . 'wp-config.php' ) ) {
+				$path = ABSPATH . 'wp-config.php';
+			} elseif ( file_exists( dirname( ABSPATH ) . '/wp-config.php' ) && ! file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
+				$path = dirname( ABSPATH ) . '/wp-config.php';
+			}
+
+			if ( $path ) {
+				$path = realpath( $path );
+			}
+		}
+
+		return $path;
+	}
+
+	/**
+	 * Adds `url_secret` to the `jetpack.idcUrlValidation` URL validation endpoint.
+	 * Adds `url_secret_error` in case of an error.
+	 *
+	 * @param array $response The endpoint response that we're modifying.
+	 *
+	 * @return array
+	 * phpcs:ignore Squiz.Commenting.FunctionCommentThrowTag -- The exception is being caught, false positive.
+	 */
+	public static function add_secret_to_url_validation_response( array $response ) {
+		try {
+			$secret = new URL_Secret();
+
+			$secret->create();
+		} catch ( Exception $e ) {
+			$response['url_secret_error'] = new WP_Error( 'unable_to_create_url_secret', $e->getMessage() );
+		}
+
+		if ( $secret->exists() ) {
+			$response['url_secret'] = $secret->get_secret();
+		}
+
+		return $response;
 	}
 }
