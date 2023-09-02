@@ -1,7 +1,1 @@
-{
-"version": 3,
-"mappings": "AAAA,oCAAqC;EACjC,eAAgB;IACZ,cAAc,EAAE,YAAY",
-"sources": ["checkout.scss"],
-"names": [],
-"file": "checkout.css"
-}
+{"version":3,"sourceRoot":"","sources":["checkout.scss"],"names":[],"mappings":"AAAA;EACI;IACI","file":"checkout.css"}

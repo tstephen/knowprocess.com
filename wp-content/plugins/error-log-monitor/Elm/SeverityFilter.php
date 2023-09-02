@@ -131,6 +131,7 @@ class Elm_SeverityFilter extends Elm_LogFilter {
 	 * @return bool true if the current element is acceptable, otherwise false.
 	 * @since 5.1.0
 	 */
+	#[\ReturnTypeWillChange]
 	public function accept() {
 		$entry = $this->getInnerIterator()->current();
 		if ( !isset($entry) ) {

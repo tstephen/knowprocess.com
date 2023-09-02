@@ -880,7 +880,7 @@ class Elm_DashboardWidget {
 		);
 		printf(
 			'<input type="number" name="%s[log_size_notification_threshold]" value="%s" 
-			        size="1" min="1" max="10240" style="max-width: 80px;" 
+			        size="5" min="1" max="10240" style="max-width: 80px;" 
 			        id="elm_log_size_notification_threshold" %s> MiB',
 			esc_attr($this->widgetId),
 			$this->settings->get('log_size_notification_threshold') / Elm_Plugin::MB_IN_BYTES,

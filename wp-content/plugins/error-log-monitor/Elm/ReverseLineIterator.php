@@ -95,6 +95,7 @@ class Elm_ReverseLineIterator implements Iterator {
 		}
 	}
 
+	#[\ReturnTypeWillChange]
 	public function rewind() {
 		//Start reading from the end of the file or from the specified position. Then move
 		//back towards the start of the file, reading it in $bufferSizeInBytes blocks.
@@ -170,18 +171,22 @@ class Elm_ReverseLineIterator implements Iterator {
 		}
 	}
 
+	#[\ReturnTypeWillChange]
 	public function valid() {
 		return isset($this->currentLine) && ($this->position >= 0);
 	}
 
+	#[\ReturnTypeWillChange]
 	public function current() {
 		return $this->currentLine;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function key() {
 		return $this->currentLineNumber;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function next() {
 		$this->readNextLine();
 	}

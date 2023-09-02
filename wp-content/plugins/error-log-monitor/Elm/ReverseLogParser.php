@@ -537,6 +537,7 @@ zend_error_va(severity, (file && ZSTR_LEN(file) > 0) ? ZSTR_VAL(file) : NULL, li
 	 *
 	 * @return array
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 		return $this->currentEntry;
 	}
@@ -544,6 +545,7 @@ zend_error_va(severity, (file && ZSTR_LEN(file) > 0) ? ZSTR_VAL(file) : NULL, li
 	/**
 	 * Move forward to next log entry.
 	 */
+	#[\ReturnTypeWillChange]
 	public function next() {
 		$this->readNextEntry();
 	}
@@ -554,6 +556,7 @@ zend_error_va(severity, (file && ZSTR_LEN(file) > 0) ? ZSTR_VAL(file) : NULL, li
 	 *
 	 * @return int|null
 	 */
+	#[\ReturnTypeWillChange]
 	public function key() {
 		return $this->currentKey;
 	}
@@ -563,6 +566,7 @@ zend_error_va(severity, (file && ZSTR_LEN(file) > 0) ? ZSTR_VAL(file) : NULL, li
 	 *
 	 * @return boolean
 	 */
+	#[\ReturnTypeWillChange]
 	public function valid() {
 		return isset($this->currentEntry);
 	}
@@ -570,6 +574,7 @@ zend_error_va(severity, (file && ZSTR_LEN(file) > 0) ? ZSTR_VAL(file) : NULL, li
 	/**
 	 * Rewind the iterator to the last log entry.
 	 */
+	#[\ReturnTypeWillChange]
 	public function rewind() {
 		$this->lineIterator->rewind();
 		$this->currentKey = 0;
@@ -590,6 +595,7 @@ zend_error_va(severity, (file && ZSTR_LEN(file) > 0) ? ZSTR_VAL(file) : NULL, li
 	 *
 	 * @return Elm_ReverseLineIterator
 	 */
+	#[\ReturnTypeWillChange]
 	public function getInnerIterator() {
 		return $this->lineIterator;
 	}

@@ -22,6 +22,7 @@ class Elm_RegexFilter extends Elm_LogFilter {
 		}
 	}
 
+	#[\ReturnTypeWillChange]
 	public function accept() {
 		$entry = $this->getInnerIterator()->current();
 		if ( !isset($entry, $entry['message']) ) {

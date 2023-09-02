@@ -3,6 +3,7 @@
 abstract class Elm_LogFilter extends FilterIterator {
 	protected $skippedEntryCount = 0;
 
+	#[\ReturnTypeWillChange]
 	public function rewind() {
 		$this->skippedEntryCount = 0;
 		parent::rewind();

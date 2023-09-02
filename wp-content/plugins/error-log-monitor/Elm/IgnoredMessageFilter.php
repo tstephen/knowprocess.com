@@ -35,6 +35,7 @@ class Elm_IgnoredMessageFilter extends Elm_LogFilter {
 	 *
 	 * @return bool true if the current element is acceptable, otherwise false.
 	 */
+	#[\ReturnTypeWillChange]
 	public function accept() {
 		$entry = $this->getInnerIterator()->current();
 		if ( !isset($entry, $entry['message']) ) {
